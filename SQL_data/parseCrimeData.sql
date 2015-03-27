@@ -1,6 +1,7 @@
 ﻿
 /* Parses..csv file with information about crimes - each "data point" includes the longitude/latitude location,
-type of crime, the number of crimes of the type, and the month/year in which they ocurred. */
+type of crime, the number of crimes of the type, and the month/year in which they ocurred. 
+Creates a table called nyc_crime_2014 of all crime data. */
 
 CREATE TABLE "nyc_crime_2014"
 (
