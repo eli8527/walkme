@@ -11,27 +11,66 @@ walkMeApp.controller("mapController", function ($scope, uiGmapGoogleMapApi) {
     uiGmapGoogleMapApi.then(function (maps) {
         walkMeApp.map = new maps.Map(document.getElementById('map-canvas'), $scope.map)
         walkMeApp.geocoder = new google.maps.Geocoder();
+        walkMeApp.directionsService = new google.maps.DirectionsService();
+        walkMeApp.directionsDisplay = new google.maps.DirectionsRenderer();
+        walkMeApp.directionsDisplay.setMap(walkMeApp.map);
     });
 });
 
 walkMeApp.controller("formController", function ($scope) {
-    $scope.codeAddress = function (element) {
-        walkMeApp.geocoder.geocode({
-            'address': element.value
-        }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                walkMeApp.map.setCenter(results[0].geometry.location);
-                var marker = new google.maps.Marker({
-                    map: walkMeApp.map,
-                    position: results[0].geometry.location
-                });
-                element.value = JSON.stringify({
-                    lat: marker.position.lat(),
-                    lng: marker.position.lng()
-                });
-            } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+    $scope.sendRequest = function (addresses) {
+        if (addresses.length != 2) {
+            return;
+        }
+
+        // calculate route
+        var directionsRequest = {
+            origin: addresses[0],
+            destination: addresses[1],
+            travelMode: google.maps.TravelMode.WALKING,
+            provideRouteAlternatives: true
+        };
+        walkMeApp.directionsService.route(directionsRequest, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                walkMeApp.directionsDisplay.setDirections(response);
+                
+                // send the route to server
+                var req = new XMLHttpRequest();
+                var url = "http://104.236.249.124/";
+
+                req.onreadystatechange = function () {
+                    if (req.readyState == 4 && req.status == 200) {
+                        var res = JSON.parse(req.responseText);
+                        console.log(res);
+                    }
+                }
+                
+                var routejson = JSON.stringify(response.routes);
+                req.open("POST", url, true);
+                req.send(routejson);
+                
+                document.getElementById('searchForm').reset();
             }
+        });
+
+    }
+
+    $scope.codeAddresses = function (addresses) {
+        addrLatLng = [];
+
+        // geocode the start and end addresses
+        _.forEach(addresses, function (address) {
+            walkMeApp.geocoder.geocode({
+                'address': address
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var pos = results[0].geometry.location;
+                    addrLatLng.push(new google.maps.LatLng(pos.lat(), pos.lng()));
+                    $scope.sendRequest(addrLatLng);
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
         });
     }
 
@@ -41,22 +80,7 @@ walkMeApp.controller("formController", function ($scope) {
         if (e.keyCode == 13) {
             var startInput = document.getElementsByName('startLocation')[0];
             var endInput = document.getElementsByName('endLocation')[0];
-            $scope.codeAddress(startInput);
-            $scope.codeAddress(endInput);
-
-            var req = new XMLHttpRequest();
-            var url = "http://104.236.249.124/api/";
-
-            req.onreadystatechange = function () {
-                if (req.readyState == 4 && req.status == 200) {
-                    var res = JSON.parse(req.responseText);
-                    console.log(res);
-                }
-            }
-            req.open("GET", url + startInput.value + endInput.value, true);
-            req.send();
-
-            document.getElementById('searchForm').reset();
+            $scope.codeAddresses([startInput.value, endInput.value]);
         }
     }
 });
