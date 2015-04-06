@@ -18,6 +18,7 @@ walkMeApp.controller("mapController", function ($scope, uiGmapGoogleMapApi) {
 });
 
 walkMeApp.controller("formController", function ($scope) {
+    // send route to server
     $scope.sendRequest = function (addresses) {
         if (addresses.length != 2) {
             return;
@@ -34,9 +35,8 @@ walkMeApp.controller("formController", function ($scope) {
             if (status == google.maps.DirectionsStatus.OK) {
                 walkMeApp.directionsDisplay.setDirections(response);
                 
-                // send the route to server
                 var req = new XMLHttpRequest();
-                var url = "http://104.236.249.124/";
+                var url = "http://104.236.249.124/api/";
 
                 req.onreadystatechange = function () {
                     if (req.readyState == 4 && req.status == 200) {
@@ -49,16 +49,15 @@ walkMeApp.controller("formController", function ($scope) {
                 req.open("POST", url, true);
                 req.send(routejson);
                 
-                document.getElementById('searchForm').reset();
+//                document.getElementById('searchForm').reset();
             }
         });
 
     }
 
+    // geocode each address in addresses
     $scope.codeAddresses = function (addresses) {
         addrLatLng = [];
-
-        // geocode the start and end addresses
         _.forEach(addresses, function (address) {
             walkMeApp.geocoder.geocode({
                 'address': address
@@ -80,6 +79,8 @@ walkMeApp.controller("formController", function ($scope) {
         if (e.keyCode == 13) {
             var startInput = document.getElementsByName('startLocation')[0];
             var endInput = document.getElementsByName('endLocation')[0];
+            if (startInput.value == '' || endInput.value == '')
+                return;
             $scope.codeAddresses([startInput.value, endInput.value]);
         }
     }
