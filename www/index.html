@@ -3,11 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title>WalkMe</title>
     <link rel="stylesheet" href="css/ionic.min.css">
     <link rel="stylesheet" href="css/style.css">
 
     <script src="js/angular.min.js"></script>
+    <script src="js/angular-animate.min.js"></script>
+    <!--
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-touch.min.js"></script>
+-->
+    <script src="js/angular-sanitize.min.js"></script>
+    <script src="js/angular-ui-router.min.js"></script>
     <script src="js/ionic.min.js"></script>
     <script src="js/ionic-angular.min.js"></script>
     <script src="js/lodash.js"></script>
@@ -18,35 +26,45 @@
 </head>
 
 <body ng-app="walkMeApp">
-    <ion-view>
-        <ion-header-bar class="bar bar-header bar-positive item-input-inset">
-            <h1 class="title">WalkMe</h1>
-        </ion-header-bar>
+    <ion-nav-bar class="bar-positive">
+    </ion-nav-bar>
+    <ion-nav-view name="home"></ion-nav-view>
+    <ion-nav-view name="routes" animation="slide-up"></ion-nav-view>
 
-        <ion-pane class="has-header">
-            <div class="list">
-                <form ng-controller="formController" id="searchForm" method="POST">
-                    <label class="item item-input" ng-keypress="submitOnEnter(event);">
-                        <input type="text" name="startLocation" placeholder="Choose starting point..." autofocus autocomplete="off">
-                    </label>
-                    <label class="item item-input" ng-keypress="submitOnEnter(event);">
-                        <input type="text" name="endLocation" placeholder="Choose destination..." autocomplete="off">
-                    </label>
-                </form>
-                <div ng-controller="mapController" id="map-canvas">
-                    <ui-gmap-google-map center="map.center" zoom="map.zoom"></ui-gmap-google-map>
+
+    <script type="text/ng-template" id="home.html">
+        <ion-view title="WalkMe">
+            <ion-content class="has-header">
+                <div class="list">
+                    <form ng-controller="formController" id="searchForm" method="POST">
+                        <label class="item item-input" ng-keypress="submitOnEnter(event);">
+                            <input type="text" name="startLocation" placeholder="Choose starting point..." autofocus autocomplete="off">
+                        </label>
+                        <label class="item item-input" ng-keypress="submitOnEnter(event);">
+                            <input type="text" name="endLocation" placeholder="Choose destination..." autocomplete="off">
+                        </label>
+                    </form>
+                    <div ng-controller="mapController" id="map-canvas">
+                        <ui-gmap-google-map center="map.center" zoom="map.zoom"></ui-gmap-google-map>
+                    </div>
                 </div>
-            </div>
-        </ion-pane>
+            </ion-content>
 
-        <ion-footer-bar ng-controller="footerController" class="bar bar-footer">
-            <button class="button button-positive" ng-click="geolocate()"><i class="icon ion-navigate"></i>Get My Location</button>
-        </ion-footer-bar>
-    </ion-view>
-
-    <script>
-        
+            <ion-footer-bar ng-controller="footerController" class="bar bar-footer">
+                <button class="button button-positive" ng-click="geolocate()"><i class="icon ion-navigate"></i>Get My Location</button>
+            </ion-footer-bar>
+        </ion-view>
     </script>
+
+    <script type="text/ng-template" id="routes.html">
+        <ion-view title="Choose A Route">
+            <ion-content class="has-header">
+                <div class="list">
+                </div>
+            </ion-content>
+        </ion-view>
+    </script>
+
 </body>
 
 </html>

@@ -10,14 +10,16 @@ walkMeApp.controller("mapController", function ($scope, uiGmapGoogleMapApi) {
     };
     uiGmapGoogleMapApi.then(function (maps) {
         walkMeApp.map = new maps.Map(document.getElementById('map-canvas'), $scope.map)
-        walkMeApp.geocoder = new google.maps.Geocoder();
-        walkMeApp.directionsService = new google.maps.DirectionsService();
-        walkMeApp.directionsDisplay = new google.maps.DirectionsRenderer();
+        walkMeApp.geocoder = new maps.Geocoder();
+        walkMeApp.directionsService = new maps.DirectionsService();
+        walkMeApp.directionsDisplay = new maps.DirectionsRenderer();
         walkMeApp.directionsDisplay.setMap(walkMeApp.map);
+        walkMeApp.startInput = document.getElementsByName('startLocation')[0];
+        walkMeApp.endInput = document.getElementsByName('endLocation')[0];
     });
 });
 
-walkMeApp.controller("formController", function ($scope) {
+walkMeApp.controller("formController", function ($scope, $state) {
     // send route to server
     $scope.sendRequest = function (addresses) {
         if (addresses.length != 2) {
@@ -33,8 +35,8 @@ walkMeApp.controller("formController", function ($scope) {
         };
         walkMeApp.directionsService.route(directionsRequest, function (response, status) {
             if (status == google.maps.DirectionsStatus.OK) {
-                walkMeApp.directionsDisplay.setDirections(response);
-                
+//                walkMeApp.directionsDisplay.setDirections(response);
+
                 var req = new XMLHttpRequest();
                 var url = "http://104.236.249.124/api/";
 
@@ -44,12 +46,12 @@ walkMeApp.controller("formController", function ($scope) {
                         console.log(res);
                     }
                 }
-                
+
                 var routejson = JSON.stringify(response.routes);
                 req.open("POST", url, true);
                 req.send(routejson);
-                
-//                document.getElementById('searchForm').reset();
+
+                $state.go('routes');
             }
         });
 
@@ -77,53 +79,40 @@ walkMeApp.controller("formController", function ($scope) {
         // look for window.event in case event isn't passed in
         e = e || window.event;
         if (e.keyCode == 13) {
-            var startInput = document.getElementsByName('startLocation')[0];
-            var endInput = document.getElementsByName('endLocation')[0];
-            if (startInput.value == '' || endInput.value == '')
+            if (walkMeApp.startInput.value == '' || walkMeApp.endInput.value == '')
                 return;
-            $scope.codeAddresses([startInput.value, endInput.value]);
+            $scope.codeAddresses([walkMeApp.startInput.value, walkMeApp.endInput.value]);
         }
     }
 });
 
 walkMeApp.controller("footerController", function ($scope) {
     $scope.geolocate = function () {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var pos = new google.maps.LatLng(position.coords.latitude,
-                    position.coords.longitude);
-                walkMeApp.map.setCenter(pos);
-                var marker = new google.maps.Marker({
-                    position: pos,
-                    map: walkMeApp.map
-                });
+        navigator.geolocation.getCurrentPosition(function (pos) {
+            var latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            walkMeApp.map.setCenter(latLng);
+//            var marker = new google.maps.Marker({
+//                position: latLng,
+//                map: walkMeApp.map
+//            });
 
-            }, function () {
-                $scope.handleNoGeolocation(true);
+            walkMeApp.geocoder.geocode({
+                'latLng': latLng
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        walkMeApp.startInput.value = results[0].formatted_address;
+                        walkMeApp.endInput.focus();
+                    } else {
+                        alert('No results found');
+                    }
+                } else {
+                    alert('Geocoder failed due to: ' + status);
+                }
             });
-        } else {
-            // Browser doesn't support Geolocation
-            $scope.handleNoGeolocation(false);
-        }
-    }
 
-    $scope.handleNoGeolocation = function (errorFlag) {
-        if (errorFlag) {
-            var content = 'Error: The Geolocation service failed.';
-        } else {
-            var content = 'Error: Your browser doesn\'t support geolocation.';
-        }
-
-        var options = {
-            map: walkMeApp.map,
-            position: {
-                lat: 40.712784,
-                lng: -74.005941
-            },
-            content: content
-        };
-
-        var infowindow = new google.maps.InfoWindow(options);
-        walkMeApp.map.setCenter(options.position);
-    }
+        }, function (error) {
+            alert('Unable to get location: ' + error.message);
+        });
+    };
 });
