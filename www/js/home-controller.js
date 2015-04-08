@@ -1,17 +1,18 @@
 /* --------------------------------------------------------------------------
-| Form Controller
+| Home View Controller
 |
-| Parses form input and communicates with the server.
+| Parses form input and communicates with the server
 |-------------------------------------------------------------------------- */
 
-app.controller("formController", function ($scope, $ionicLoading, $ionicPopover) {
-    
-    $scope.displayRoute = function (index) {
+app.controller("homeController", function ($scope, $state, $ionicLoading, $ionicPopover) {
+
+    $scope.setAppRoute = function (index) {
         app.directionsDisplay.setMap(null);
         app.directionsDisplay = new google.maps.DirectionsRenderer({
             map: app.map,
             directions: $scope.routeInfo.results,
-            routeIndex: index
+            routeIndex: index,
+            hideRouteList: true
         });
     }
 
@@ -44,8 +45,11 @@ app.controller("formController", function ($scope, $ionicLoading, $ionicPopover)
                         // make info available to view
                         $scope.routeInfo = {
                             results: response,
-                            indices: res.indicies
+                            indices: []
                         };
+                        _.forEach(res.indicies, function (index) {
+                            $scope.routeInfo.indices.push(Math.round(index));
+                        });
 
                         // initialize and show routes in popover
                         $ionicPopover.fromTemplateUrl('templates/popover.html', {
@@ -54,6 +58,8 @@ app.controller("formController", function ($scope, $ionicLoading, $ionicPopover)
                             $scope.popover = popover;
                             $scope.popover.show(document.getElementById('popover-source'));
                         });
+
+                        $scope.setAppRoute(0);
                     }
                 }
 
@@ -106,4 +112,31 @@ app.controller("formController", function ($scope, $ionicLoading, $ionicPopover)
             });
         }
     }
-})
+
+    // Center map on user's current location
+    $scope.geolocate = function () {
+        navigator.geolocation.getCurrentPosition(function (pos) {
+            var latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            app.map.setCenter(latLng);
+            app.map.setZoom(17);
+
+            // set start input value to current location
+            app.geocoder.geocode({
+                'latLng': latLng
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        app.startInput.value = results[0].formatted_address;
+                        app.endInput.focus();
+                    } else {
+                        alert('No results found');
+                    }
+                } else {
+                    alert('Geocoder failed due to: ' + status);
+                }
+            });
+        }, function (error) {
+            alert('Unable to get location: ' + error.message);
+        });
+    };
+});
