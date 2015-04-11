@@ -1,7 +1,7 @@
-.popover-backdrop.active{
-  background:none !important;
+.popover-backdrop.active {
+    background: none !important;
 }
 
-#map-canvas {
-    height: 500px;
+.popup-body {
+    overflow: auto;
 }

@@ -1,0 +1,21 @@
+<ion-view title="Choose A Route">
+
+    <ion-content id="view-container">
+        <ul class="list" id="routes-container">
+            <div ng-repeat="route in routeInfo.results.routes">
+                <a ng-model="route" class="item" ng-click="setAppRoute($index)">
+                    <span class="safety-index">{{routeInfo.indices[$index]}}</span>
+                    <span>via</span> {{route.summary}} {{route.legs[0].distance.text}} {{route.legs[0].duration.text}}
+                </a>
+            </div>
+            <div class="card" id="minimap-canvas">
+                <ui-gmap-google-map center="mapOptions.center" zoom="mapOptions.zoom"></ui-gmap-google-map>
+            </div>
+        </ul>
+    </ion-content>
+
+    <ion-footer-bar class="bar bar-footer">
+        <button class="button button-positive" ui-sref="route">Go!</button>
+    </ion-footer-bar>
+
+</ion-view>

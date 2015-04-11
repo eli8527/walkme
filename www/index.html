@@ -8,85 +8,29 @@
     <link rel="stylesheet" href="css/ionic.min.css">
     <link rel="stylesheet" href="css/style.css">
 
-    <script src="js/angular.min.js"></script>
-    <script src="js/angular-animate.min.js"></script>
-    <!--
-    <script src="js/angular-route.min.js"></script>
-    <script src="js/angular-touch.min.js"></script>
--->
-    <script src="js/angular-sanitize.min.js"></script>
-    <script src="js/angular-ui-router.min.js"></script>
-    <script src="js/ionic.min.js"></script>
-    <script src="js/ionic-angular.min.js"></script>
-    <script src="js/lodash.js"></script>
-    <script src="js/angular-google-maps.min.js"></script>
+    <script src="js/lib/angular/angular.min.js"></script>
+    <script src="js/lib/angular/angular-animate.min.js"></script>
+    <script src="js/lib/angular/angular-sanitize.min.js"></script>
+    <script src="js/lib/angular/angular-ui-router.min.js"></script>
+    <script src="js/lib/ionic/ionic.min.js"></script>
+    <script src="js/lib/ionic/ionic-angular.min.js"></script>
+    <script src="js/lib/angular-google-maps/lodash.js"></script>
+    <script src="js/lib/angular-google-maps/angular-google-maps.min.js"></script>
+    
     <script src="js/app.js"></script>
-    <script src="js/app-controller.js"></script>
     <script src="js/home-controller.js"></script>
     <script src="js/route-controller.js"></script>
+    <script src="js/options-controller.js"></script>
 </head>
 
-<body ng-app="walkMeApp" ng-controller="appController">
-    <div class="bar bar-header bar-positive">
-        <div class="h1 title">WalkMe</div>
-        <button class="button button-icon icon ion-navicon" id="popover-source"></button>
-    </div>
+<body ng-app="walkMeApp">
+    <ion-nav-bar class="bar-positive">
+        <ion-nav-back-button class="button button-clear">
+            Back
+        </ion-nav-back-button>
+    </ion-nav-bar>
 
-    <ion-nav-view name="home"></ion-nav-view>
-    <ion-nav-view name="route"></ion-nav-view>
-
-    <script type="text/ng-template" id="templates/home.html">
-        <ion-view title="WalkMe">
-            <ion-content class="has-header">
-                <div class="list">
-                    <form id="searchForm">
-                        <label class="item item-input" ng-keypress="submitOnEnter(event);">
-                            <input type="text" name="startLocation" placeholder="Choose starting point..." autofocus autocomplete="off">
-                        </label>
-                        <label class="item item-input" ng-keypress="submitOnEnter(event);">
-                            <input type="text" name="endLocation" placeholder="Choose destination..." autocomplete="off">
-                        </label>
-                    </form>
-                    <div id="map-canvas">
-                        <ui-gmap-google-map center="map.center" zoom="map.zoom"></ui-gmap-google-map>
-                    </div>
-                </div>
-            </ion-content>
-
-            <ion-footer-bar class="bar bar-footer">
-                <button class="button button-positive" ng-click="geolocate()"><i class="icon ion-navigate"></i>Get My Location</button>
-            </ion-footer-bar>
-        </ion-view>
-    </script>
-
-    <script type="text/ng-template" id="templates/route.html">
-        <ion-view title="Directions">
-            <ion-content class="has-header">
-                <div id="directions-panel">
-                </div>
-            </ion-content>
-        </ion-view>
-    </script>
-
-    <script type="text/ng-template" id="templates/popover.html">
-        <ion-popover-view>
-            <ion-header-bar>
-                <h1 class="title">Choose A Route</h1>
-            </ion-header-bar>
-            <ion-content>
-                <ul class="list">
-                    <div ng-repeat="route in routeInfo.results.routes">
-                        <a ng-model="route" class="item" ng-click="setAppRoute($index)">
-                            <span class="safety-index">{{routeInfo.indices[$index]}}</span>
-                            <span>via</span> {{route.summary}} {{route.legs[0].distance.text}} {{route.legs[0].duration.text}}
-                        </a>
-                    </div>
-                    <a ui-sref="route" class="button button-block button-positive">Go!</a>
-                </ul>
-            </ion-content>
-        </ion-popover-view>
-    </script>
-
+    <ion-nav-view class="slide-left-right"></ion-nav-view>
 
 </body>
 

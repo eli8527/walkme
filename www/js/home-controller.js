@@ -4,18 +4,51 @@
 | Parses form input and communicates with the server
 |-------------------------------------------------------------------------- */
 
-app.controller("homeController", function ($scope, $state, $ionicLoading, $ionicPopover) {
+app.controller("homeController", function ($scope, $state, $ionicLoading, $ionicPopup, uiGmapGoogleMapApi) {
 
-    $scope.setAppRoute = function (index) {
-        app.directionsDisplay.setMap(null);
-        app.directionsDisplay = new google.maps.DirectionsRenderer({
-            map: app.map,
-            directions: $scope.routeInfo.results,
-            routeIndex: index,
-            hideRouteList: true
-        });
+    $scope.init = function () {
+        // cache relevant DOM elements
+        $scope.startInput = document.getElementsByName('startLocation')[0];
+        $scope.endInput = document.getElementsByName('endLocation')[0];
+
+        // used for rendering with angular-google-maps
+        // default center on New York
+        $scope.mapOptions = {
+            center: {
+                latitude: 40.712784,
+                longitude: -74.005941,
+                lat: 40.712784,
+                lng: -74.005941
+            },
+            zoom: 12
+        };
+
+        // set the map height to match window size
+        document.getElementById('map-canvas').style.height =
+            document.getElementById('map-container').clientHeight -
+            document.getElementById('map-form').clientHeight + 'px';
     }
 
+    // Load Google maps resources (async call)
+    uiGmapGoogleMapApi.then(function (maps) {
+        $scope.init();
+        $scope.map = new maps.Map(document.getElementById('map-canvas'), $scope.mapOptions);
+        $scope.geocoder = new maps.Geocoder();
+        $scope.directionsService = new maps.DirectionsService();
+    });
+
+
+    // Make a popup with given error message
+    $scope.showAlert = function (error) {
+        $scope.startInput.blur();
+        $scope.endInput.blur();
+        $ionicPopup.alert({
+            title: ':(',
+            template: error
+        });
+    };
+
+    // Send a JSON request to the server for safety indices of paths
     $scope.requestSafetyIndices = function (addresses) {
         // make sure both addresses have been geocoded
         if (addresses.length != 2) {
@@ -31,7 +64,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         };
 
         // send request for safety index to the server
-        app.directionsService.route(directionsRequest, function (response, status) {
+        $scope.directionsService.route(directionsRequest, function (response, status) {
             if (status == google.maps.DirectionsStatus.OK) {
                 var req = new XMLHttpRequest();
                 var url = "http://104.236.249.124/api/";
@@ -43,23 +76,23 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                         var res = JSON.parse(req.responseText);
 
                         // make info available to view
-                        $scope.routeInfo = {
+                        $scope.$parent.routeInfo = {
                             results: response,
                             indices: []
                         };
-                        _.forEach(res.indicies, function (index) {
-                            $scope.routeInfo.indices.push(Math.round(index));
+
+                        var inRange = true;
+                        _.forEach(res.indices, function (index) {
+                            $scope.$parent.routeInfo.indices.push((Math.round(index * 10) / 10).toFixed(1));
+                            if (index < 0) {
+                                inRange = false;
+                            }
                         });
 
-                        // initialize and show routes in popover
-                        $ionicPopover.fromTemplateUrl('templates/popover.html', {
-                            scope: $scope,
-                        }).then(function (popover) {
-                            $scope.popover = popover;
-                            $scope.popover.show(document.getElementById('popover-source'));
-                        });
-
-                        $scope.setAppRoute(0);
+                        if (inRange)
+                            $state.go('options');
+                        else
+                            $scope.showAlert("We can't calculate safety for your route!");
                     }
                 }
 
@@ -69,45 +102,48 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
                 // display loading icon while waiting for response
                 $ionicLoading.show();
+            } else {
+                $scope.showAlert("No routes available!");
             }
         });
     }
 
+    // Geocode the start and end address and submit request
     $scope.submitOnEnter = function (e) {
         // look for window.event in case event isn't passed in
         e = e || window.event;
 
         if (e.keyCode == 13) {
             // make sure both input fields are populated
-            if (app.startInput.value == '' || app.endInput.value == '')
+            if ($scope.startInput.value == '' || $scope.endInput.value == '')
                 return;
 
             // array containing lat/lng of start and end addresses
             var addrLatLng = [];
 
             // geocode the start address
-            app.geocoder.geocode({
-                'address': app.startInput.value
+            $scope.geocoder.geocode({
+                'address': $scope.startInput.value
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var pos = results[0].geometry.location;
                     addrLatLng.push(new google.maps.LatLng(pos.lat(), pos.lng()));
                     $scope.requestSafetyIndices(addrLatLng); // workaround for async call
                 } else {
-                    alert('Geocode was not successful for the following reason: ' + status);
+                    $scope.showAlert("We couldn't find your start address!");
                 }
             });
 
             // geocode the end address
-            app.geocoder.geocode({
-                'address': app.endInput.value
+            $scope.geocoder.geocode({
+                'address': $scope.endInput.value
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var pos = results[0].geometry.location;
                     addrLatLng.push(new google.maps.LatLng(pos.lat(), pos.lng()));
                     $scope.requestSafetyIndices(addrLatLng); // workaround for async call
                 } else {
-                    alert('Geocode was not successful for the following reason: ' + status);
+                    $scope.showAlert("We couldn't find your destination address!");
                 }
             });
         }
@@ -117,17 +153,17 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
     $scope.geolocate = function () {
         navigator.geolocation.getCurrentPosition(function (pos) {
             var latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-            app.map.setCenter(latLng);
-            app.map.setZoom(17);
+            $scope.map.setCenter(latLng);
+            $scope.map.setZoom(17);
 
             // set start input value to current location
-            app.geocoder.geocode({
+            $scope.geocoder.geocode({
                 'latLng': latLng
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
-                        app.startInput.value = results[0].formatted_address;
-                        app.endInput.focus();
+                        $scope.startInput.value = results[0].formatted_address;
+                        $scope.endInput.focus();
                     } else {
                         alert('No results found');
                     }
@@ -136,7 +172,9 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                 }
             });
         }, function (error) {
-            alert('Unable to get location: ' + error.message);
+            $scope.showAlert('Geolocation not supported!');
+            console.log('Unable to get location: ' + error.message);
         });
     };
+
 });
