@@ -1,7 +1,47 @@
-.popover-backdrop.active {
-    background: none !important;
-}
-
 .popup-body {
     overflow: auto;
+}
+
+.safety-0 {
+    color: #f20000;
+}
+
+.safety-1 {
+    color: #ea3d00;
+}
+
+.safety-2 {
+    color: #ea5f00;
+}
+
+.safety-3 {
+    color: #ee8e00;
+}
+
+.safety-4 {
+    color: #deb400;
+}
+
+.safety-5 {
+    color: #e2dd00;
+}
+
+.safety-6 {
+    color: #b7e200;
+}
+
+.safety-7 {
+    color: #8bea00;
+}
+
+.safety-8 {
+    color: #58da00;
+}
+
+.safety-9 {
+    color: #38d600;
+}
+
+.safety-10 {
+    color: #00d200;
 }

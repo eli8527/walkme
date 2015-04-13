@@ -19,7 +19,8 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
 
             document.getElementById('minimap-canvas').style.height =
                 (document.getElementById('view-container').clientHeight -
-                    document.getElementById('routes-container').clientHeight) + 'px';
+                    document.getElementById('routes-container').clientHeight -
+                    document.getElementById('go-btn').clientHeight) / 1.1 + 'px';
 
             $scope.map = new maps.Map(document.getElementById('minimap-canvas'), $scope.mapOptions);
             app.directionsDisplay = new maps.DirectionsRenderer();
