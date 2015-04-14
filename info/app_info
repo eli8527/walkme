@@ -1,0 +1,12 @@
+- What is WalkMe?
+
+WalkMe recommends the safest and shortest walking paths from point A to point B based purely on historical crime data.  Every route option comes with a Safety Index from 1 to 10, representing a data-based estimate of the safety of the path by considering the recorded crimes in the area. 
+Let WalkMe be your personal escort – walk safe with WalkMe!
+
+- Which cities does WalkMe currently serve? 
+
+Our database currently only contains crime data for the New York City area, including Manhattan, Brooklyn, the Bronx, and Queens.  The crime data was compiled from maps.nyc.gov/crime/. 
+
+- Warning: Use with caution
+
+All Safety Indices are calculated purely from past reported and recorded crimes, given by the New York Police Department, but they are still only estimates.  We do not take into account any other characteristics of the area other than the past crime totals and types.  Recorded crimes do not constitute a complete view of safety, so always walk with caution – it’s always better to be safe!
