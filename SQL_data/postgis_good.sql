@@ -1,0 +1,1 @@
+﻿SELECT id,cr FROM nyc_crime_2014 WHERE ST_DWithin(geom, ST_GeomFromText('POINT(-73.82438416 40.87369753)',4326),.0042) ORDER BY ST_Distance(geom, ST_GeomFromText('POINT(-73.82438416 40.87369753)',4326));
