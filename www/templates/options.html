@@ -2,19 +2,31 @@
 
     <ion-content id="view-container">
         <ul class="list" id="routes-container">
-            <div ng-repeat="route in routeInfo.results.routes">
-                <a ng-model="route" class="item" ng-click="setAppRoute($index)">
-                    <span class="safety-index"><b>{{routeInfo.indices[$index]}}</b></span>
-                    <span class="route-dur">{{route.legs[0].duration.text}}</span>
-                    <span class="route-dist">({{route.legs[0].distance.text}})</span>
-                    <p class="route-summ">via {{route.summary}}</p>
-                </a>
+            <div class="item item-divider">
+                Preview
             </div>
-            <div class="card" id="minimap-canvas">
+
+            <div id="minimap-canvas">
                 <ui-gmap-google-map center="mapOptions.center" zoom="mapOptions.zoom"></ui-gmap-google-map>
             </div>
+
+            <div class="item item-divider">
+                Options
+            </div>
+            <div ng-repeat="route in routeInfo.results.routes" ng-click="setAppRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
+                <a ng-model="route">
+                    <h1 class="safety-index" style="color:{{indexToColor(routeInfo.indices[$index])}}">
+                    {{routeInfo.indices[$index]}}
+                    </h1>
+                    <span>{{route.legs[0].duration.text}}</span>
+                    <span>({{route.legs[0].distance.text}})</span>
+                    <p>via {{route.summary}}</p>
+                </a>
+                <button class="go-btn button button-clear button-large button-positive" ui-sref="route">
+                    Go!
+                </button>
+            </div>
         </ul>
-        <button id="go-btn" class="button button-full button-positive" ui-sref="route">Go!</button>
     </ion-content>
 
 </ion-view>

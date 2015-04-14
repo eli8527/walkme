@@ -21,6 +21,12 @@ app.config(function (uiGmapGoogleMapApiProvider, $stateProvider, $urlRouterProvi
             url: '/route',
             templateUrl: 'templates/route.html',
             controller: 'routeController'
+        })
+        .state('about', {
+            name: 'about',
+            url: '/about',
+            templateUrl: 'templates/about.html',
+            controller: 'aboutController'
         });
 
     uiGmapGoogleMapApiProvider.configure({

@@ -1,9 +1,3 @@
-/* --------------------------------------------------------------------------
-| Home View Controller
-|
-| Parses form input and communicates with the server
-|-------------------------------------------------------------------------- */
-
 app.controller("homeController", function ($scope, $state, $ionicLoading, $ionicPopup, uiGmapGoogleMapApi) {
 
     $scope.init = function () {
@@ -34,19 +28,33 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         $scope.init();
         $scope.map = new maps.Map(document.getElementById('map-canvas'), $scope.mapOptions);
         $scope.geocoder = new maps.Geocoder();
+        $scope.bounds = new google.maps.LatLngBounds(new google.maps.LatLng(40.491370, -74.259090), new google.maps.LatLng(40.915256, -73.700272));
         $scope.directionsService = new maps.DirectionsService();
     });
-
 
     // Make a popup with given error message
     $scope.showAlert = function (error) {
         $scope.startInput.blur();
         $scope.endInput.blur();
-        $ionicPopup.alert({
+        var popup = $ionicPopup.alert({
             title: ':(',
             template: error
         });
+        document.onkeypress = function (e) {
+            e = e || window.event;
+            if (e.keyCode == 13) {
+                if (popup) {
+                    popup.close();
+                }
+            }
+        };
     };
+
+    $scope.switchInputs = function () {
+        var start = $scope.startInput.value;
+        $scope.startInput.value = $scope.endInput.value;
+        $scope.endInput.value = start;
+    }
 
     // Send a JSON request to the server for safety indices of paths
     $scope.requestSafetyIndices = function (addresses) {
@@ -81,7 +89,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                             indices: []
                         };
 
-                        var inRange = true;
+                        var inRange = true; // false if no safety data available
                         _.forEach(res.indices, function (index) {
                             $scope.$parent.routeInfo.indices.push((Math.round(index * 10) / 10).toFixed(1));
                             if (index < 0) {
@@ -123,7 +131,8 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
             // geocode the start address
             $scope.geocoder.geocode({
-                'address': $scope.startInput.value
+                'address': $scope.startInput.value,
+                'bounds': $scope.bounds
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var pos = results[0].geometry.location;
@@ -136,7 +145,8 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
             // geocode the end address
             $scope.geocoder.geocode({
-                'address': $scope.endInput.value
+                'address': $scope.endInput.value,
+                'bounds': $scope.bounds
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var pos = results[0].geometry.location;

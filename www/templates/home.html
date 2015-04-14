@@ -1,17 +1,12 @@
 <ion-view title="WalkMe">
 
-    <div class="bar bar-header">
-        <div class="title"></div>
-        <button class="button" id="popover-source"></button>
-    </div>
-
     <ion-content id="map-container" class="has-header">
         <div class="list">
             <form id="map-form">
-                <label class="item item-input" ng-keypress="submitOnEnter(event);">
+                <label id="start-input" class="item item-input" ng-keypress="submitOnEnter(event);">
                     <input type="text" name="startLocation" placeholder="Choose starting point..." autofocus autocomplete="off">
                 </label>
-                <label class="item item-input" ng-keypress="submitOnEnter(event);">
+                <label id="end-input" class="item item-input" ng-keypress="submitOnEnter(event);">
                     <input type="text" name="endLocation" placeholder="Choose destination..." autocomplete="off">
                 </label>
             </form>
@@ -22,7 +17,16 @@
     </ion-content>
 
     <ion-footer-bar class="bar bar-footer">
-        <button class="button button-positive" ng-click="geolocate()"><i class="icon ion-navigate"></i>Get My Location</button>
+        <div class="buttons">
+            <button class="button button-positive" ng-click="geolocate()">
+                <i class="icon ion-navigate"></i> Get My Location
+            </button>
+<!--
+            <button class="button button-positive" ng-click="switchInputs()" id="switch-btn">
+                <i class="icon ion-arrow-swap"></i> &nbsp; Reverse start & end
+            </button>
+-->
+        </div>
     </ion-footer-bar>
 
 </ion-view>

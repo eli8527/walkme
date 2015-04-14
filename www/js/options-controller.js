@@ -19,8 +19,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
 
             document.getElementById('minimap-canvas').style.height =
                 (document.getElementById('view-container').clientHeight -
-                    document.getElementById('routes-container').clientHeight -
-                    document.getElementById('go-btn').clientHeight) / 1.1 + 'px';
+                    document.getElementById('routes-container').clientHeight) + 'px';
 
             $scope.map = new maps.Map(document.getElementById('minimap-canvas'), $scope.mapOptions);
             app.directionsDisplay = new maps.DirectionsRenderer();
@@ -30,7 +29,30 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
 
     });
 
+    $scope.indexToColor = function (index) {
+        if (index < 0) {
+            console.log("Invalid safety index");
+            return undefined;
+        } else if (index <= 3) return "#f20000";
+        else if (index <= 4) return "#ea3d00";
+        else if (index <= 5) return "#ea5f00";
+        else if (index <= 6) return "#ee8e00";
+        else if (index <= 6.5) return "#deb400";
+        else if (index <= 7) return "#e2dd00";
+        else if (index <= 7.5) return "#b7e200";
+        else if (index <= 8) return "#8bea00";
+        else if (index <= 8.5) return "#58da00";
+        else if (index <= 9) return "#38d600";
+        else if (index <= 10) return "#00d200";
+        else {
+            console.log("Invalid safety index");
+            return undefined;
+        }
+    }
+
     $scope.setAppRoute = function (index) {
+        $scope.active = index;
+
         app.directionsDisplay.setMap(null);
         app.directionsDisplay = new google.maps.DirectionsRenderer({
             map: $scope.map,
@@ -38,6 +60,10 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
             routeIndex: index,
             hideRouteList: true
         });
+    }
+
+    $scope.isActiveRoute = function (index) {
+        return $scope.active === index;
     }
 
 
