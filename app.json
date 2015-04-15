@@ -1,0 +1,7 @@
+{
+    "name": "WalkMe",
+    "description": "A simple walking app in NYC",
+    "repository": "https://github.com/eli8527/walkme",
+    "logo": "http://pathToYourLogo.png",
+    "keywords": ["ionic", "walking"]
+}
