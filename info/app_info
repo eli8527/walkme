@@ -1,6 +1,7 @@
 - What is WalkMe?
 
-WalkMe recommends the safest and shortest walking paths from point A to point B based purely on historical crime data.  Every route option comes with a Safety Index from 1 to 10, representing a data-based estimate of the safety of the path by considering the recorded crimes in the area. 
+WalkMe recommends the safest and shortest walking paths from point A to point B based purely on historical crime data.  Every route option comes with a Safety Index from 1 to 10, representing a data-based estimate of the safety of the path by considering the recorded crimes in the area. Locations outside of the NYC area will show a N/A safety index, since these are currently not served by WalkMe.
+
 Let WalkMe be your personal escort – walk safe with WalkMe!
 
 - Which cities does WalkMe currently serve? 
