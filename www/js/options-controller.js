@@ -33,7 +33,8 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
         if (index < 0) {
             console.log("Invalid safety index");
             return undefined;
-        } else if (index <= 3) return "#f20000";
+        } else if (index === 'N/A') return "#888888";
+        else if (index <= 3) return "#f20000";
         else if (index <= 4) return "#ea3d00";
         else if (index <= 5) return "#ea5f00";
         else if (index <= 6) return "#ee8e00";

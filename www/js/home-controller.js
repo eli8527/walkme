@@ -86,18 +86,13 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                         // make info available to view
                         $scope.$parent.routeInfo = response;
 
-                        var inRange = true; // false if no safety data available
                         _.forEach(res.indices, function (index, i) {
                             $scope.$parent.routeInfo.routes[i].index = (Math.round(index * 10) / 10).toFixed(1);
                             if (index < 0) {
-                                inRange = false;
+                                $scope.$parent.routeInfo.routes[i].index = 'N/A';
                             }
                         });
-
-                        if (inRange)
-                            $state.go('options');
-                        else
-                            $scope.showAlert("We can't calculate safety for your route!");
+                        $state.go('options');
                     }
                 }
 
@@ -108,7 +103,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                 // display loading icon while waiting for response
                 $ionicLoading.show();
             } else {
-                $scope.showAlert("No routes available!");
+                $scope.showAlert("No walking routes available!");
             }
         });
     }
