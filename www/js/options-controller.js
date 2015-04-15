@@ -56,7 +56,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
         app.directionsDisplay.setMap(null);
         app.directionsDisplay = new google.maps.DirectionsRenderer({
             map: $scope.map,
-            directions: $scope.routeInfo.results,
+            directions: $scope.routeInfo,
             routeIndex: index,
             hideRouteList: true
         });

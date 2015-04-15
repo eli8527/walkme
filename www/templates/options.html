@@ -13,10 +13,10 @@
             <div class="item item-divider">
                 Options
             </div>
-            <div ng-repeat="route in routeInfo.results.routes" ng-click="setAppRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
+            <div ng-repeat="route in routeInfo.routes | orderBy:'-index'" ng-click="setAppRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
                 <a ng-model="route">
-                    <h1 class="safety-index" style="color:{{indexToColor(routeInfo.indices[$index])}}">
-                    {{routeInfo.indices[$index]}}
+                    <h1 class="safety-index" style="color:{{indexToColor(route.index)}}">
+                        {{route.index}}
                     </h1>
                     <span>{{route.legs[0].duration.text}}</span>
                     <span>({{route.legs[0].distance.text}})</span>

@@ -84,14 +84,11 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                         var res = JSON.parse(req.responseText);
 
                         // make info available to view
-                        $scope.$parent.routeInfo = {
-                            results: response,
-                            indices: []
-                        };
+                        $scope.$parent.routeInfo = response;
 
                         var inRange = true; // false if no safety data available
-                        _.forEach(res.indices, function (index) {
-                            $scope.$parent.routeInfo.indices.push((Math.round(index * 10) / 10).toFixed(1));
+                        _.forEach(res.indices, function (index, i) {
+                            $scope.$parent.routeInfo.routes[i].index = (Math.round(index * 10) / 10).toFixed(1);
                             if (index < 0) {
                                 inRange = false;
                             }
