@@ -25,7 +25,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
         if (!localStorage.getItem("hasViewedIntro")) {
             $scope.showWelcome();
-            localStorage.setItem("hasViewedIntro","true");
+            localStorage.setItem("hasViewedIntro", "true");
         }
     }
 
@@ -43,7 +43,6 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         var autocomplete = new google.maps.places.Autocomplete(element, {
             bounds: $scope.bounds
         });
-        autocomplete.marker = undefined;
 
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             var place = autocomplete.getPlace();
@@ -88,7 +87,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
             }
         };
     };
-    
+
     // Make a popup with welcome
     $scope.showWelcome = function () {
         $scope.startInput.blur();
@@ -152,7 +151,6 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                         $scope.startInput.blur();
                         $scope.endInput.blur();
                         $state.go('options');
-
                     }
                 }
 
@@ -224,10 +222,19 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
                         $scope.startInput.value = results[0].formatted_address;
+
+                        // place marker
+                        if ($scope.geoMarker) {
+                            $scope.geoMarker.setMap(null);
+                        }
+                        $scope.geoMarker = $scope.addMarker(latLng);
+                        $scope.markerBounds.extend($scope.geoMarker.getPosition());
+                        $scope.map.fitBounds($scope.markerBounds);
+
+                        // resign keyboard
                         cordova.plugins.Keyboard.close();
-                        //$scope.endInput.focus();
                     } else {
-                        alert('No results found');
+                        $scope.showAlert('We couldn\'t find your location!');
                     }
                 } else {
                     alert('Geocoder failed due to: ' + status);
