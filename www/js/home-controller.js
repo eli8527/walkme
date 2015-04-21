@@ -92,7 +92,9 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                                 $scope.$parent.routeInfo.routes[i].index = 'N/A';
                             }
                         });
+                        
                         $state.go('options');
+
                     }
                 }
 
@@ -112,7 +114,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
     $scope.submitOnEnter = function (e) {
         // look for window.event in case event isn't passed in
         e = e || window.event;
-
+        
         if (e.keyCode == 13) {
             // make sure both input fields are populated
             if ($scope.startInput.value == '' || $scope.endInput.value == '')
@@ -153,6 +155,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Center map on user's current location
     $scope.geolocate = function () {
+        
         navigator.geolocation.getCurrentPosition(function (pos) {
             var latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
             $scope.map.setCenter(latLng);
@@ -165,7 +168,8 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
                         $scope.startInput.value = results[0].formatted_address;
-                        $scope.endInput.focus();
+                        cordova.plugins.Keyboard.close();
+                        //$scope.endInput.focus();
                     } else {
                         alert('No results found');
                     }

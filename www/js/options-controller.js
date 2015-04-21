@@ -1,5 +1,5 @@
 app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
-
+    
     uiGmapGoogleMapApi.then(function (maps) {
         $scope.mapOptions = {
             center: {
@@ -24,6 +24,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
             $scope.map = new maps.Map(document.getElementById('minimap-canvas'), $scope.mapOptions);
             app.directionsDisplay = new maps.DirectionsRenderer();
             $scope.setAppRoute(0);
+            
             $scope.loaded = true;
         });
 
