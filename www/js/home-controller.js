@@ -92,7 +92,8 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                                 $scope.$parent.routeInfo.routes[i].index = 'N/A';
                             }
                         });
-                        
+                        $scope.startInput.blur();
+                        $scope.endInput.blur();
                         $state.go('options');
 
                     }
