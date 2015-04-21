@@ -1,5 +1,5 @@
 app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
-    
+
     uiGmapGoogleMapApi.then(function (maps) {
         $scope.mapOptions = {
             center: {
@@ -14,8 +14,9 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
 
         $scope.loaded = false;
         $scope.$on("$ionicView.enter", function () {
-            if ($scope.loaded)
+            if ($scope.loaded) {
                 return;
+            }
 
             document.getElementById('minimap-canvas').style.height =
                 (document.getElementById('view-container').clientHeight -
@@ -49,7 +50,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
             console.log("Invalid safety index");
             return undefined;
         }
-    }
+    };
 
     $scope.setAppRoute = function (index) {
         $scope.active = index;
@@ -61,11 +62,9 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
             routeIndex: index,
             hideRouteList: true
         });
-    }
+    };
 
     $scope.isActiveRoute = function (index) {
         return $scope.active === index;
-    }
-
-
+    };
 });

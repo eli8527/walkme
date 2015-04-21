@@ -27,7 +27,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
             $scope.showWelcome();
             localStorage.setItem("hasViewedIntro", "true");
         }
-    }
+    };
 
     // Drop a marker on the map
     $scope.addMarker = function (location) {
@@ -36,7 +36,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
             map: $scope.map
         });
         return marker; // return reference for cleanup
-    }
+    };
 
     // Configure autocomplete and associated callbacks
     $scope.setUpAutocomplete = function (element) {
@@ -56,7 +56,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
             $scope.markerBounds.extend(autocomplete.marker.getPosition());
             $scope.map.fitBounds($scope.markerBounds);
         });
-    }
+    };
 
     // Load Google maps resources (async call)
     uiGmapGoogleMapApi.then(function (maps) {
@@ -98,7 +98,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         });
         document.onkeypress = function (e) {
             e = e || window.event;
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 if (popup) {
                     popup.close();
                 }
@@ -115,7 +115,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
     // Send a JSON request to the server for safety indices of paths
     $scope.requestSafetyIndices = function (addresses) {
         // make sure both addresses have been geocoded
-        if (addresses.length != 2) {
+        if (addresses.length !== 2) {
             return;
         }
 
@@ -205,7 +205,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                 }
             });
         }
-    }
+    };
 
     // Center map on user's current location
     $scope.geolocate = function () {
@@ -237,7 +237,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                         $scope.showAlert('We couldn\'t find your location!');
                     }
                 } else {
-                    alert('Geocoder failed due to: ' + status);
+                    $scope.showAlert('Geocoder failed due to: ' + status);
                 }
             });
         }, function (error) {
