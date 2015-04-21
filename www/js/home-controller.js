@@ -21,6 +21,11 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         document.getElementById('map-canvas').style.height =
             document.getElementById('map-container').clientHeight -
             document.getElementById('map-form').clientHeight + 'px';
+
+        if (!localStorage.getItem("hasViewedIntro")) {
+            $scope.showWelcome();
+            localStorage.setItem("hasViewedIntro","true");
+        }
     }
 
     // Load Google maps resources (async call)
@@ -39,6 +44,24 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         var popup = $ionicPopup.alert({
             title: ':(',
             template: error
+        });
+        document.onkeypress = function (e) {
+            e = e || window.event;
+            if (e.keyCode == 13) {
+                if (popup) {
+                    popup.close();
+                }
+            }
+        };
+    };
+    
+    // Make a popup with welcome
+    $scope.showWelcome = function () {
+        $scope.startInput.blur();
+        $scope.endInput.blur();
+        var popup = $ionicPopup.alert({
+            title: 'Welcome',
+            template: 'Welcome to WalkMe NYC!. To learn more, click the info button in the upper right corner.'
         });
         document.onkeypress = function (e) {
             e = e || window.event;
@@ -115,7 +138,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
     $scope.submitOnEnter = function (e) {
         // look for window.event in case event isn't passed in
         e = e || window.event;
-        
+
         if (e.keyCode == 13) {
             // make sure both input fields are populated
             if ($scope.startInput.value == '' || $scope.endInput.value == '')
@@ -156,7 +179,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Center map on user's current location
     $scope.geolocate = function () {
-        
+
         navigator.geolocation.getCurrentPosition(function (pos) {
             var latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
             $scope.map.setCenter(latLng);
