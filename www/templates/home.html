@@ -1,4 +1,4 @@
-<ion-view title="WalkMe">
+<ion-view title="WalkMe NYC">
 
     <ion-content id="map-container" class="has-header">
         <div class="list">
@@ -16,17 +16,26 @@
         </div>
     </ion-content>
 
+    <div class="float-button" ng-click="geolocate()">
+        <span class="height-fix">
+            <a ui-sref="add-trip" class="content">
+              <i class="icon ion-android-locate"> </i>
+            </a>
+        </span>
+    </div>
+
+<!--
     <ion-footer-bar class="bar bar-footer">
-        <div class="buttons">
+        <div class="buttons">            
             <button class="button button-positive" ng-click="geolocate()">
                 <i class="icon ion-navigate"></i> Get My Location
             </button>
-<!--
+            <a class="button button-icon icon ion-ios-information-outline"></a>
             <button class="button button-positive" ng-click="switchInputs()" id="switch-btn">
                 <i class="icon ion-arrow-swap"></i> &nbsp; Reverse start & end
             </button>
--->
         </div>
     </ion-footer-bar>
+-->
 
 </ion-view>

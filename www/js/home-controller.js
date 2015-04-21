@@ -14,7 +14,8 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                 lat: 40.712784,
                 lng: -74.005941
             },
-            zoom: 12
+            zoom: 12,
+            disableDefaultUI: true
         };
 
         // set the map height to match window size
@@ -28,13 +29,46 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         }
     }
 
+    // Drop a marker on the map
+    $scope.addMarker = function (location) {
+        var marker = new google.maps.Marker({
+            position: location,
+            map: $scope.map
+        });
+        return marker; // return reference for cleanup
+    }
+
+    // Configure autocomplete and associated callbacks
+    $scope.setUpAutocomplete = function (element) {
+        var autocomplete = new google.maps.places.Autocomplete(element, {
+            bounds: $scope.bounds
+        });
+        autocomplete.marker = undefined;
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                return;
+            }
+            if (autocomplete.marker) {
+                autocomplete.marker.setMap(null);
+            }
+            autocomplete.marker = $scope.addMarker(place.geometry.location);
+            $scope.markerBounds.extend(autocomplete.marker.getPosition());
+            $scope.map.fitBounds($scope.markerBounds);
+        });
+    }
+
     // Load Google maps resources (async call)
     uiGmapGoogleMapApi.then(function (maps) {
         $scope.init();
+        $scope.markerBounds = new maps.LatLngBounds();
+        $scope.bounds = new maps.LatLngBounds(new google.maps.LatLng(40.491370, -74.259090), new google.maps.LatLng(40.915256, -73.700272));
         $scope.map = new maps.Map(document.getElementById('map-canvas'), $scope.mapOptions);
         $scope.geocoder = new maps.Geocoder();
-        $scope.bounds = new google.maps.LatLngBounds(new google.maps.LatLng(40.491370, -74.259090), new google.maps.LatLng(40.915256, -73.700272));
         $scope.directionsService = new maps.DirectionsService();
+        $scope.setUpAutocomplete($scope.startInput);
+        $scope.setUpAutocomplete($scope.endInput);
     });
 
     // Make a popup with given error message
@@ -47,7 +81,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         });
         document.onkeypress = function (e) {
             e = e || window.event;
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 if (popup) {
                     popup.close();
                 }
@@ -73,11 +107,11 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         };
     };
 
-    $scope.switchInputs = function () {
-        var start = $scope.startInput.value;
-        $scope.startInput.value = $scope.endInput.value;
-        $scope.endInput.value = start;
-    }
+    //    $scope.switchInputs = function () {
+    //        var start = $scope.startInput.value;
+    //        $scope.startInput.value = $scope.endInput.value;
+    //        $scope.endInput.value = start;
+    //    }
 
     // Send a JSON request to the server for safety indices of paths
     $scope.requestSafetyIndices = function (addresses) {
@@ -139,7 +173,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         // look for window.event in case event isn't passed in
         e = e || window.event;
 
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
             // make sure both input fields are populated
             if ($scope.startInput.value == '' || $scope.endInput.value == '')
                 return;
@@ -149,8 +183,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
             // geocode the start address
             $scope.geocoder.geocode({
-                'address': $scope.startInput.value,
-                'bounds': $scope.bounds
+                'address': $scope.startInput.value
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var pos = results[0].geometry.location;
@@ -163,8 +196,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
             // geocode the end address
             $scope.geocoder.geocode({
-                'address': $scope.endInput.value,
-                'bounds': $scope.bounds
+                'address': $scope.endInput.value
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var pos = results[0].geometry.location;
@@ -206,5 +238,4 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
             console.log('Unable to get location: ' + error.message);
         });
     };
-
 });

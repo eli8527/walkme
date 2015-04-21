@@ -32,6 +32,6 @@ app.config(function (uiGmapGoogleMapApiProvider, $stateProvider, $urlRouterProvi
     uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyBt1EnZ9lAjCx6nOu4iqUtFQ9sKnjOvGCE',
         v: '3.17',
-        libraries: 'geometry, visualization'
+        libraries: 'places'
     });
 });
