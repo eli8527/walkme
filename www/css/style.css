@@ -57,6 +57,10 @@ input {
     background-color: white;
 }
 
+#map-form button {
+    z-index: 999;   
+}
+
 .float-button {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -65,7 +69,6 @@ input {
     padding: 25px;
     position: fixed;
     right: 20px;
-    z-index: 9999;
     box-shadow: 1px 1px 4px #555;
     cursor: pointer;
     font-size: 24px;

@@ -108,11 +108,13 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Clear the start input field
     $scope.clearStart = function () {
+        console.log('clearing start field');
         $scope.startInput.value = '';
     }
 
     // Clear the end input field
     $scope.clearEnd = function () {
+        console.log('clearing end field');
         $scope.endInput.value = '';
     }
 
@@ -182,6 +184,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Geocode the start and end address and submit request
     $scope.submit = function () {
+        console.log('submitting');
         // make sure both input fields are populated
         if ($scope.startInput.value == '' || $scope.endInput.value == '')
             return;
@@ -219,7 +222,10 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
     $scope.submitOnEnter = function (e) {
         // look for window.event in case event isn't passed in
         e = e || window.event;
-        if (e.keyCode === 13) $scope.submit();
+        if (e.keyCode === 13) {
+            console.log('pressed enter -- submitting');
+            $scope.submit();
+        }
     };
 
     // Center map on user's current location

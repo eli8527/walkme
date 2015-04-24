@@ -1,36 +1,40 @@
 <ion-view title="WalkMe NYC">
+
+    <!--  Navbar buttons  -->
     <ion-nav-buttons side="secondary">
         <a class="button button-icon icon ion-ios-information-outline" ui-sref="about"></a>
     </ion-nav-buttons>
 
     <ion-content id="map-container" class="has-header">
-        <div class="list">
-            <form id="map-form">
-                <div class="item item-input-inset">
-                    <label id="start-input" class="item-input-wrapper" ng-keypress="submitOnEnter(event);">
-                        <input type="text" name="startLocation" placeholder="Choose starting point..." autocomplete="off" autocorrect="off" ng-focus="disableTapStart()">
-                    </label>
-                    <button class="button button-clear button-small" ng-class="{'hidden':!hasStartInput()}" ng-click="clearStart()">
-                        <i class="icon ion-close-round"></i>
-                    </button>
-                </div>
-
-                <div class="item item-input-inset">
-                    <label id="end-input" class="item-input-wrapper" ng-keypress="submitOnEnter(event);">
-                        <input type="text" name="endLocation" placeholder="Choose destination..." autocomplete="off" autocorrect="off" ng-focus="disableTapEnd()">
-                    </label>
-                    <button class="button button-clear button-small" ng-class="{'hidden':!hasEndInput()}" ng-click="clearEnd()">
-                        <i class="icon ion-close-round"></i>
-                    </button>
-                </div>
-
-            </form>
-            <div id="map-canvas">
-                <ui-gmap-google-map center="mapOptions.center" zoom="mapOptions.zoom"></ui-gmap-google-map>
+        <form id="map-form">
+            <!--  Start input  -->
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper" ng-keypress="submitOnEnter(event);">
+                    <input id="start-input" type="text" name="startLocation" placeholder="Choose starting point..." autocomplete="off" autocorrect="off" ng-focus="disableTapStart()">
+                </label>
+                <button class="button button-clear button-small" ng-class="{'hidden':!hasStartInput()}" ng-click="clearStart()">
+                    <i class="icon ion-close-round"></i>
+                </button>
             </div>
+
+            <!--  End Input  -->
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper" ng-keypress="submitOnEnter(event);">
+                    <input id="end-input" type="text" name="endLocation" placeholder="Choose destination..." autocomplete="off" autocorrect="off" ng-focus="disableTapEnd()">
+                </label>
+                <button class="button button-clear button-small" ng-class="{'hidden':!hasEndInput()}" ng-click="clearEnd()">
+                    <i class="icon ion-close-round"></i>
+                </button>
+            </div>
+        </form>
+
+        <!--   Canvas for angular-google-maps   -->
+        <div id="map-canvas">
+            <ui-gmap-google-map center="mapOptions.center" zoom="mapOptions.zoom"></ui-gmap-google-map>
         </div>
     </ion-content>
 
+    <!--  Floating action buttons  -->
     <div id="geolocate-btn" class="float-button" ng-click="geolocate()">
         <span class="height-fix">
             <a class="content">
@@ -45,4 +49,5 @@
             </a>
         </span>
     </div>
+
 </ion-view>
