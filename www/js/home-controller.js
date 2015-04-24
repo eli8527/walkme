@@ -2,8 +2,8 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     $scope.init = function () {
         // cache relevant DOM elements
-        $scope.startInput = document.getElementsByName('startLocation')[0];
-        $scope.endInput = document.getElementsByName('endLocation')[0];
+        $scope.startInput = document.getElementById('start-input');
+        $scope.endInput = document.getElementById('end-input');
 
         // used for rendering with angular-google-maps
         // default center on New York
@@ -108,13 +108,11 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Clear the start input field
     $scope.clearStart = function () {
-        console.log('clearing start field');
         $scope.startInput.value = '';
     }
 
     // Clear the end input field
     $scope.clearEnd = function () {
-        console.log('clearing end field');
         $scope.endInput.value = '';
     }
 
@@ -219,12 +217,23 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         });
     }
 
-    $scope.submitOnEnter = function (e) {
+    $scope.handleKeydownOnInput = function (e) {
         // look for window.event in case event isn't passed in
         e = e || window.event;
+
+        // submit form on enter
         if (e.keyCode === 13) {
-            console.log('pressed enter -- submitting');
+            e.preventDefault(); // prevent ng-click on clear button from firing
             $scope.submit();
+        }
+
+        // focus on other input on tab
+        else if (e.keyCode === 9) {
+            e.preventDefault();
+            if ($scope.startInput === document.activeElement)
+                $scope.endInput.focus();
+            else if ($scope.endInput === document.activeElement)
+                $scope.startInput.focus();
         }
     };
 

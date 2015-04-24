@@ -9,8 +9,8 @@
         <form id="map-form">
             <!--  Start input  -->
             <div class="item item-input-inset">
-                <label class="item-input-wrapper" ng-keypress="submitOnEnter(event);">
-                    <input id="start-input" type="text" name="startLocation" placeholder="Choose starting point..." autocomplete="off" autocorrect="off" ng-focus="disableTapStart()">
+                <label class="item-input-wrapper" ng-keydown="handleKeydownOnInput(event);">
+                    <input id="start-input" type="text" placeholder="Choose starting point..." autocomplete="off" autocorrect="off" ng-focus="disableTapStart()">
                 </label>
                 <button class="button button-clear button-small" ng-class="{'hidden':!hasStartInput()}" ng-click="clearStart()">
                     <i class="icon ion-close-round"></i>
@@ -19,8 +19,8 @@
 
             <!--  End Input  -->
             <div class="item item-input-inset">
-                <label class="item-input-wrapper" ng-keypress="submitOnEnter(event);">
-                    <input id="end-input" type="text" name="endLocation" placeholder="Choose destination..." autocomplete="off" autocorrect="off" ng-focus="disableTapEnd()">
+                <label class="item-input-wrapper" ng-keydown="handleKeydownOnInput(event);">
+                    <input id="end-input" type="text" placeholder="Choose destination..." autocomplete="off" autocorrect="off" ng-focus="disableTapEnd()">
                 </label>
                 <button class="button button-clear button-small" ng-class="{'hidden':!hasEndInput()}" ng-click="clearEnd()">
                     <i class="icon ion-close-round"></i>
