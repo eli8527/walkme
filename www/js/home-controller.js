@@ -66,7 +66,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         $scope.map = new maps.Map(document.getElementById('map-canvas'), $scope.mapOptions);
         $scope.geocoder = new maps.Geocoder();
         $scope.directionsService = new maps.DirectionsService();
-            $scope.setUpAutocomplete($scope.startInput);
+        $scope.setUpAutocomplete($scope.startInput);
         $scope.setUpAutocomplete($scope.endInput);
     });
 
@@ -106,11 +106,25 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         };
     };
 
-    //    $scope.switchInputs = function () {
-    //        var start = $scope.startInput.value;
-    //        $scope.startInput.value = $scope.endInput.value;
-    //        $scope.endInput.value = start;
-    //    }
+    // Clear the start input field
+    $scope.clearStart = function () {
+        $scope.startInput.value = '';
+    }
+
+    // Clear the end input field
+    $scope.clearEnd = function () {
+        $scope.endInput.value = '';
+    }
+
+    $scope.hasStartInput = function () {
+        if (!$scope.startInput) return false;
+        return $scope.startInput.value !== '';
+    }
+
+    $scope.hasEndInput = function () {
+        if (!$scope.endInput) return false;
+        return $scope.endInput.value !== '';
+    }
 
     // Send a JSON request to the server for safety indices of paths
     $scope.requestSafetyIndices = function (addresses) {
@@ -256,7 +270,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
             $scope.startInput.blur();
         });
     };
-    
+
     $scope.disableTapEnd = function () {
         container = document.getElementsByClassName('pac-container');
         // disable ionic data tab

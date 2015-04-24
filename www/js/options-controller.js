@@ -18,9 +18,10 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
                 return;
             }
 
-            document.getElementById('minimap-canvas').style.height =
-                (document.getElementById('view-container').clientHeight -
-                    document.getElementById('routes-container').clientHeight) + 'px';
+            var mapHeight = document.getElementById('view-container').clientHeight - document.getElementById('routes-container').clientHeight;
+            if (mapHeight < 200) mapHeight = 200;
+            document.getElementById('minimap-canvas').style.height = mapHeight + 'px';
+                
 
             $scope.map = new maps.Map(document.getElementById('minimap-canvas'), $scope.mapOptions);
             app.directionsDisplay = new maps.DirectionsRenderer();

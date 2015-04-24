@@ -44,6 +44,14 @@
     margin: auto;
 }
 
+.hidden {
+    display: none;
+}
+
+.item-input-wrapper {
+    background-color: white;
+}
+
 .float-button {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -74,13 +82,11 @@
     bottom: 40px;
 }
 
-.float-button#submit-btn:hover,
-.float-button#submit-btn:active {
+.float-button#submit-btn:hover {
     background-color: #bbb;
 }
 
-.float-button#geolocate-btn:hover,
-.float-button#geolocate-btn:active {
+.float-button#geolocate-btn:hover {
     background-color: #bbb;
     color: white;
 }

@@ -6,12 +6,24 @@
     <ion-content id="map-container" class="has-header">
         <div class="list">
             <form id="map-form">
-                <label id="start-input" class="item item-input" ng-keypress="submitOnEnter(event);">
-                    <input type="text" name="startLocation" placeholder="Choose starting point..." autocomplete="off" autocorrect="off" ng-focus="disableTapStart()">
-                </label>
-                <label id="end-input" class="item item-input" ng-keypress="submitOnEnter(event);">
-                    <input type="text" name="endLocation" placeholder="Choose destination..." autocomplete="off" autocorrect="off" ng-focus="disableTapEnd()">
-                </label>
+                <div class="item item-input-inset">
+                    <label id="start-input" class="item-input-wrapper" ng-keypress="submitOnEnter(event);">
+                        <input type="text" name="startLocation" placeholder="Choose starting point..." autocomplete="off" autocorrect="off" ng-focus="disableTapStart()">
+                    </label>
+                    <button class="button button-clear button-small" ng-class="{'hidden':!hasStartInput()}" ng-click="clearStart()">
+                        <i class="icon ion-close-round"></i>
+                    </button>
+                </div>
+
+                <div class="item item-input-inset">
+                    <label id="end-input" class="item-input-wrapper" ng-keypress="submitOnEnter(event);">
+                        <input type="text" name="endLocation" placeholder="Choose destination..." autocomplete="off" autocorrect="off" ng-focus="disableTapEnd()">
+                    </label>
+                    <button class="button button-clear button-small" ng-class="{'hidden':!hasEndInput()}" ng-click="clearEnd()">
+                        <i class="icon ion-close-round"></i>
+                    </button>
+                </div>
+
             </form>
             <div id="map-canvas">
                 <ui-gmap-google-map center="mapOptions.center" zoom="mapOptions.zoom"></ui-gmap-google-map>
