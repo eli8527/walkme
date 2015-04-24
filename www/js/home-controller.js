@@ -145,7 +145,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                         _.forEach(res.indices, function (index, i) {
                             $scope.$parent.routeInfo.routes[i].index = (Math.round(index * 10) / 10).toFixed(1);
                             if (index < 0) {
-                                $scope.$parent.routeInfo.routes[i].index = 'N/A';
+                                $scope.$parent.routeInfo.routes[i].index = '-';
                             }
                         });
                         $scope.startInput.blur();
@@ -166,45 +166,46 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         });
     }
 
+    $scope.submit = function () {
+        // make sure both input fields are populated
+        if ($scope.startInput.value == '' || $scope.endInput.value == '')
+            return;
+
+        // array containing lat/lng of start and end addresses
+        var addrLatLng = [];
+
+        // geocode the start address
+        $scope.geocoder.geocode({
+            'address': $scope.startInput.value
+        }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var pos = results[0].geometry.location;
+                addrLatLng.push(new google.maps.LatLng(pos.lat(), pos.lng()));
+                $scope.requestSafetyIndices(addrLatLng); // workaround for async call
+            } else {
+                $scope.showAlert("We couldn't find your start address!");
+            }
+        });
+
+        // geocode the end address
+        $scope.geocoder.geocode({
+            'address': $scope.endInput.value
+        }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var pos = results[0].geometry.location;
+                addrLatLng.push(new google.maps.LatLng(pos.lat(), pos.lng()));
+                $scope.requestSafetyIndices(addrLatLng); // workaround for async call
+            } else {
+                $scope.showAlert("We couldn't find your destination address!");
+            }
+        });
+    }
+
     // Geocode the start and end address and submit request
     $scope.submitOnEnter = function (e) {
         // look for window.event in case event isn't passed in
         e = e || window.event;
-
-        if (e.keyCode === 13) {
-            // make sure both input fields are populated
-            if ($scope.startInput.value == '' || $scope.endInput.value == '')
-                return;
-
-            // array containing lat/lng of start and end addresses
-            var addrLatLng = [];
-
-            // geocode the start address
-            $scope.geocoder.geocode({
-                'address': $scope.startInput.value
-            }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    var pos = results[0].geometry.location;
-                    addrLatLng.push(new google.maps.LatLng(pos.lat(), pos.lng()));
-                    $scope.requestSafetyIndices(addrLatLng); // workaround for async call
-                } else {
-                    $scope.showAlert("We couldn't find your start address!");
-                }
-            });
-
-            // geocode the end address
-            $scope.geocoder.geocode({
-                'address': $scope.endInput.value
-            }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    var pos = results[0].geometry.location;
-                    addrLatLng.push(new google.maps.LatLng(pos.lat(), pos.lng()));
-                    $scope.requestSafetyIndices(addrLatLng); // workaround for async call
-                } else {
-                    $scope.showAlert("We couldn't find your destination address!");
-                }
-            });
-        }
+        if (e.keyCode === 13) $scope.submit();
     };
 
     // Center map on user's current location

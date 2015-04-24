@@ -6,12 +6,17 @@
     font-size: 19pt;
     margin: 0;
     padding: 0;
+    text-decoration: none;
+}
+
+.safety-index-link {
+    text-decoration: none;
 }
 
 .active-route {
-    -webkit-box-shadow: inset 0px 0px 0px 1px #4A87EE;
-    -moz-box-shadow: inset 0px 0px 0px 1px #4A87EE;
-    box-shadow: inset 0px 0px 0px 1px #4A87EE;
+    -webkit-box-shadow: inset 0px 0px 0px 1px #444;
+    -moz-box-shadow: inset 0px 0px 0px 1px #444;
+    box-shadow: inset 0px 0px 0px 1px #444;
 }
 
 .go-btn {
@@ -45,23 +50,12 @@
     border-radius: 50%;
     width: 25px;
     padding: 25px;
-    font-size: 24px;
     position: fixed;
-    bottom: 50px;
     right: 20px;
     z-index: 9999;
-    background-color: #4A87EE;
     box-shadow: 1px 1px 4px #555;
     cursor: pointer;
-}
-
-.float-button:hover,
-.float-button:active {
-    background-color: #5B98ff;
-}
-
-.float-button .height_fix {
-    background-color: #4A87EE;
+    font-size: 24px;
 }
 
 .float-button .content {
@@ -72,5 +66,28 @@
     width: 100%;
     text-align: center;
     margin-top: -12px;
-    color: #fff;
+}
+
+.float-button#submit-btn {
+    background-color: #444;
+    color: white;
+    bottom: 40px;
+}
+
+.float-button#submit-btn:hover,
+.float-button#submit-btn:active {
+    background-color: #bbb;
+}
+
+.float-button#geolocate-btn:hover,
+.float-button#geolocate-btn:active {
+    background-color: #bbb;
+    color: white;
+}
+
+.float-button#geolocate-btn {
+    background-color: white;
+    color: #444;
+    font-size: 24px;
+    bottom: 110px;
 }

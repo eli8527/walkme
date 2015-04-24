@@ -15,14 +15,16 @@
             </div>
             <div ng-repeat="route in routeInfo.routes | orderBy:'-index'" ng-click="setAppRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
                 <a ng-model="route">
-                    <h1 class="safety-index" style="color:{{indexToColor(route.index)}}">
-                        {{route.index}}
-                    </h1>
+                    <a class="safety-index-link" ui-sref="about">
+                        <h1 class="safety-index" style="color:{{indexToColor(route.index)}}">
+                            {{route.index}}
+                        </h1>
+                    </a>
                     <span>{{route.legs[0].duration.text}}</span>
                     <span>({{route.legs[0].distance.text}})</span>
                     <p>via {{route.summary}}</p>
                 </a>
-                <button class="go-btn button button-clear button-positive" ui-sref="route">
+                <button class="go-btn button button-clear button-dark" ui-sref="route">
                     Go!
                 </button>
             </div>
