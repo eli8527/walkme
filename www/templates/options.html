@@ -15,11 +15,13 @@
             </div>
             <div ng-repeat="route in routeInfo.routes | orderBy:'-index'" ng-click="setAppRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
                 <a ng-model="route">
-                    <a class="safety-index-link" ui-sref="about">
-                        <h1 class="safety-index" style="color:{{indexToColor(route.index)}}">
+                    <div>
+                        <a class="safety-index-link" ui-sref="about">
+                            <h1 class="safety-index" style="color:{{indexToColor(route.index)}}">
                             {{route.index}}
                         </h1>
-                    </a>
+                        </a>
+                    </div>
                     <span>{{route.legs[0].duration.text}}</span>
                     <span>({{route.legs[0].distance.text}})</span>
                     <p>via {{route.summary}}</p>

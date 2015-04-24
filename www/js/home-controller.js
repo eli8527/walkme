@@ -180,6 +180,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         });
     }
 
+    // Geocode the start and end address and submit request
     $scope.submit = function () {
         // make sure both input fields are populated
         if ($scope.startInput.value == '' || $scope.endInput.value == '')
@@ -215,7 +216,6 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         });
     }
 
-    // Geocode the start and end address and submit request
     $scope.submitOnEnter = function (e) {
         // look for window.event in case event isn't passed in
         e = e || window.event;

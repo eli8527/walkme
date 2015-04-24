@@ -10,6 +10,7 @@
 }
 
 .safety-index-link {
+    display: inline-block;
     text-decoration: none;
 }
 
@@ -29,6 +30,10 @@
 
 .active-route .go-btn {
     display: block !important;
+}
+
+input {
+    width: 100%;
 }
 
 .disclaimer-btn {
