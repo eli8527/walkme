@@ -30,12 +30,28 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
     };
 
     // Drop a marker on the map
-    $scope.addMarker = function (location) {
+    $scope.addMarker = function (location, element) {
         var marker = new google.maps.Marker({
             position: location,
             map: $scope.map
         });
-        return marker; // return reference for cleanup
+
+        // clear preexisting marker
+        if (element === $scope.startInput) {
+            if ($scope.startMarker) {
+                $scope.startMarker.setMap(null);
+            }
+            $scope.startMarker = marker;
+        } else {
+            if ($scope.endMarker) {
+                $scope.endMarker.setMap(null);
+            }
+            $scope.endMarker = marker;
+        }
+
+        // resize map to fit new marker
+        $scope.markerBounds.extend(marker.getPosition());
+        $scope.map.fitBounds($scope.markerBounds);
     };
 
     // Configure autocomplete and associated callbacks
@@ -49,12 +65,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
             if (!place.geometry) {
                 return;
             }
-            if (autocomplete.marker) {
-                autocomplete.marker.setMap(null);
-            }
-            autocomplete.marker = $scope.addMarker(place.geometry.location);
-            $scope.markerBounds.extend(autocomplete.marker.getPosition());
-            $scope.map.fitBounds($scope.markerBounds);
+            $scope.addMarker(place.geometry.location, element);
         });
     };
 
@@ -239,7 +250,6 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Center map on user's current location
     $scope.geolocate = function () {
-
         navigator.geolocation.getCurrentPosition(function (pos) {
             var latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
             $scope.map.setCenter(latLng);
@@ -252,14 +262,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
                         $scope.startInput.value = results[0].formatted_address;
-
-                        // place marker
-                        if ($scope.geoMarker) {
-                            $scope.geoMarker.setMap(null);
-                        }
-                        $scope.geoMarker = $scope.addMarker(latLng);
-                        $scope.markerBounds.extend($scope.geoMarker.getPosition());
-                        $scope.map.fitBounds($scope.markerBounds);
+                        $scope.addMarker(latLng, $scope.startInput);
 
                         // resign keyboard
                         cordova.plugins.Keyboard.close();
