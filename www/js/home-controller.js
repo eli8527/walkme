@@ -66,7 +66,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         $scope.map = new maps.Map(document.getElementById('map-canvas'), $scope.mapOptions);
         $scope.geocoder = new maps.Geocoder();
         $scope.directionsService = new maps.DirectionsService();
-        $scope.setUpAutocomplete($scope.startInput);
+            $scope.setUpAutocomplete($scope.startInput);
         $scope.setUpAutocomplete($scope.endInput);
     });
 
@@ -244,6 +244,26 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         }, function (error) {
             $scope.showAlert('Geolocation not supported!');
             console.log('Unable to get location: ' + error.message);
+        });
+    };
+
+    $scope.disableTapStart = function () {
+        container = document.getElementsByClassName('pac-container');
+        // disable ionic data tab
+        angular.element(container).attr('data-tap-disabled', 'true');
+        // leave input field if google-address-entry is selected
+        angular.element(container).on("click", function () {
+            $scope.startInput.blur();
+        });
+    };
+    
+    $scope.disableTapEnd = function () {
+        container = document.getElementsByClassName('pac-container');
+        // disable ionic data tab
+        angular.element(container).attr('data-tap-disabled', 'true');
+        // leave input field if google-address-entry is selected
+        angular.element(container).on("click", function () {
+            $scope.endInput.blur();
         });
     };
 });
