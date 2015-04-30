@@ -14,11 +14,18 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
 
         $scope.loaded = false;
         $scope.$on("$ionicView.enter", function () {
+            if ($scope.map) {
+                app.directionsDisplay.setMap($scope.map);
+                
+                // prevent map rendering bug on reentering the view
+                maps.event.trigger($scope.map, 'resize');
+            }
+            
             if ($scope.loaded) {
                 return;
             }
 
-            var mapHeight = document.getElementById('view-container').clientHeight - document.getElementById('routes-container').clientHeight;
+            var mapHeight = document.getElementById('options-view-container').clientHeight - document.getElementById('options-container').clientHeight;
             if (mapHeight < 200) mapHeight = 200;
             document.getElementById('minimap-canvas').style.height = mapHeight + 'px';
 
@@ -57,6 +64,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
 
         return (min < 5);
     };
+    
     $scope.showSafetyInfo = function () {
         var popup = $ionicPopup.show({
             title: 'Route Details',
@@ -120,20 +128,4 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
         return pctDifference >= 0;
     }
     
-    $scope.getUber = function () {
-        console.log("uber");
-        window.open('uber://?action=setPickup&pickup=my_location', 'system');
-    };
-
-    $scope.shouldShow = function () {
-
-        // is it ios?
-        var ios = navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false;
-        if (!ios) {
-            return false;
-        }
-
-        // get lowest safety index
-        return true;
-    };
 });

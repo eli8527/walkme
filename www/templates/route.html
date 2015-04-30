@@ -1,6 +1,29 @@
 <ion-view title="Directions">
-    <ion-content overflow-scroll="false" class="has-header">
-        <div id="directions-panel">
-        </div>
+    <ion-content overflow-scroll="true" id="directions-view-container">
+        <ul class="list" id="directions-container">
+            <div class="item item-divider">
+                Map
+            </div>
+
+            <div id="directions-map-canvas">
+                <ui-gmap-google-map center="mapOptions.center" zoom="mapOptions.zoom"></ui-gmap-google-map>
+            </div>
+
+            <div class="item item-divider">
+                Directions
+            </div>
+
+            <div id="directions-panel">
+            </div>
+        </ul>
     </ion-content>
+
+    <div id="geolocate-directions-btn" class="float-button" ng-click="geolocate()">
+        <span class="height-fix">
+            <a class="content">
+              <i class="icon ion-android-locate"> </i>
+            </a>
+        </span>
+    </div>
+
 </ion-view>

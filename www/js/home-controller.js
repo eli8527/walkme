@@ -79,7 +79,13 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         $scope.directionsService = new maps.DirectionsService();
         $scope.setUpAutocomplete($scope.startInput);
         $scope.setUpAutocomplete($scope.endInput);
+        
+        // prevent map rendering bug on reentering the view
+        $scope.$on('$ionicView.enter', function () {
+            maps.event.trigger($scope.map, 'resize');
+        });
     });
+
 
     // Make a popup with given error message
     $scope.showAlert = function (error) {
@@ -187,10 +193,10 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                             }
 
                             // assign safety details
-                            route.numCrimes = $scope.roundToNearestTenth(res.numCrimes[i]);
+                            route.numCrimes = Math.round(res.numCrimes[i]);
                             if (route.numCrimes > 0)
                                 route.numCrimes = '+' + route.numCrimes;
-                            route.severity = $scope.roundToNearestTenth(res.severity[i]);
+                            route.severity = Math.round(res.severity[i]);
                             if (route.severity > 0)
                                 route.severity = '+' + route.severity;
                         }

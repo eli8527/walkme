@@ -1,7 +1,7 @@
 <ion-view title="Choose A Route">
 
-    <ion-content overflow-scroll="true" id="view-container">
-        <ul class="list" id="routes-container">
+    <ion-content overflow-scroll="true" id="options-view-container">
+        <ul class="list" id="options-container">
             <div class="item item-divider">
                 Preview
             </div>
@@ -28,8 +28,8 @@
                     <span>({{route.legs[0].distance.text}})</span>
                     <p>via {{route.summary}}</p>
                 </a>
-                <button class="go-btn button button-clear button-dark" ui-sref="route">
-                    Go!
+                <button class="go-btn button button-clear" ui-sref="route">
+                    <span><i class="icon ion-forward"> </i></span>
                 </button>
             </div>
             <div class="uber">
