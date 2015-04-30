@@ -1,6 +1,6 @@
 <ion-view title="Choose A Route">
 
-    <ion-content overflow-scroll="true" id="view-container">
+    <ion-content overflow-scroll="false" id="view-container">
         <ul class="list" id="routes-container">
             <div class="item item-divider">
                 Preview
@@ -29,6 +29,9 @@
                 <button class="go-btn button button-clear button-dark" ui-sref="route">
                     Go!
                 </button>
+            </div>
+            <div class="uber">
+                <button class="button" ng-click="getUber()" ng-class="{'hidden':!shouldShow()}">Request an Uber</button>
             </div>
         </ul>
     </ion-content>

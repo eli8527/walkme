@@ -21,7 +21,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
             var mapHeight = document.getElementById('view-container').clientHeight - document.getElementById('routes-container').clientHeight;
             if (mapHeight < 200) mapHeight = 200;
             document.getElementById('minimap-canvas').style.height = mapHeight + 'px';
-                
+
 
             $scope.map = new maps.Map(document.getElementById('minimap-canvas'), $scope.mapOptions);
             app.directionsDisplay = new maps.DirectionsRenderer();
@@ -67,5 +67,20 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
 
     $scope.isActiveRoute = function (index) {
         return $scope.active === index;
+    };
+
+    $scope.getUber = function () {
+        console.log("uber");
+        window.open('uber://?action=setPickup&pickup=my_location', 'system');
+    };
+
+    $scope.shouldShow = function () {
+        
+        // is it ios?
+        var ios = navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false;
+        if (!ios) { return false; }
+        
+        // get lowest safety index
+        return true;
     };
 });
