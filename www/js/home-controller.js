@@ -188,11 +188,11 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
                             // assign safety details
                             route.numCrimes = $scope.roundToNearestTenth(res.numCrimes[i]);
-//                            if (route.numCrimes > 0)
-//                                route.numCrimes = '+' + route.numCrimes;
+                            if (route.numCrimes > 0)
+                                route.numCrimes = '+' + route.numCrimes;
                             route.severity = $scope.roundToNearestTenth(res.severity[i]);
-//                            if (route.severity > 0)
-//                                route.severity = '+' + route.severity;
+                            if (route.severity > 0)
+                                route.severity = '+' + route.severity;
                         }
 
                         $scope.startInput.blur();
