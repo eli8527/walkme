@@ -11,20 +11,21 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
             zoom: 12,
             disableDefaultUI: true
         };
-
+        
         $scope.loaded = false;
         $scope.$on("$ionicView.enter", function () {
             if ($scope.map) {
+                // make sure the route polyline shows on return from directions view
                 app.directionsDisplay.setMap($scope.map);
-                
-                // prevent map rendering bug on reentering the view
+                // prevent map rendering bug
                 maps.event.trigger($scope.map, 'resize');
             }
-            
+
             if ($scope.loaded) {
                 return;
             }
 
+            // set the preview map height to fit screen
             var mapHeight = document.getElementById('options-view-container').clientHeight - document.getElementById('options-container').clientHeight;
             if (mapHeight < 200) mapHeight = 200;
             document.getElementById('minimap-canvas').style.height = mapHeight + 'px';
@@ -36,14 +37,14 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
         });
 
     });
-    
-    // requests an uber
+
+    // Requests an uber
     $scope.getUber = function () {
         console.log("uber");
         window.open('uber://?action=setPickup&pickup=my_location', 'system');
     };
 
-    // should we show the uber button?
+    // Should we show the uber button?
     $scope.shouldShow = function () {
 
         // is it ios?
@@ -64,7 +65,8 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
 
         return (min < 5);
     };
-    
+
+    // Make a popup that shows additional safety details
     $scope.showSafetyInfo = function () {
         var popup = $ionicPopup.show({
             title: 'Route Details',
@@ -86,28 +88,46 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
         };
     };
 
+    // Get color to render for safety index
     $scope.indexToColor = function (index) {
-        if (index < 0) {
-            console.log("Invalid safety index");
-            return undefined;
-        } else if (index === '-') return "#888888";
-        else if (index <= 3) return "#f20000";
-        else if (index <= 4) return "#ea3d00";
-        else if (index <= 5) return "#ea5f00";
-        else if (index <= 6) return "#ee8e00";
-        else if (index <= 6.5) return "#deb400";
-        else if (index <= 7) return "#e2dd00";
-        else if (index <= 7.5) return "#b7e200";
-        else if (index <= 8) return "#8bea00";
-        else if (index <= 8.5) return "#58da00";
-        else if (index <= 9) return "#38d600";
-        else if (index <= 10) return "#00d200";
-        else {
-            console.log("Invalid safety index");
-            return undefined;
-        }
+        if (index < 0) return "#888888";
+        if (index <= 3) return "#f20000";
+        if (index <= 4) return "#ea3d00";
+        if (index <= 5) return "#ea5f00";
+        if (index <= 6) return "#ee8e00";
+        if (index <= 6.5) return "#deb400";
+        if (index <= 7) return "#e2dd00";
+        if (index <= 7.5) return "#b7e200";
+        if (index <= 8) return "#8bea00";
+        if (index <= 8.5) return "#58da00";
+        if (index <= 9) return "#38d600";
+        if (index <= 10) return "#00d200";
+        
+        console.log("Invalid safety index");
+        return undefined;
     };
 
+    // Convert safety index to display text
+    $scope.indexToText = function (index) {
+        if (index < 0) return "-";
+        else return (Math.round(index * 10) / 10).toFixed(1);
+    }
+
+    // Get color to render for percentage
+    $scope.pctToColor = function (pct) {
+        if (pct === -999 || pct == 0) return "#888888";
+        if (pct > 0) return "#f20000";
+        return "#00d200";
+    }
+
+    // Convert percentage to display text
+    $scope.pctToText = function (pct) {
+        if (pct === -999) return 'No data'
+        if (pct <= 0) return Math.round(pct) + '%';
+        if (pct > 0) return '+' + Math.round(pct) + '%';
+    }
+
+    // Set the highlighted route to the route at index
     $scope.setAppRoute = function (index) {
         $scope.active = $scope.routeInfo.routes[index];
 
@@ -120,12 +140,8 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
         });
     };
 
+    // Is the route at index active?
     $scope.isActiveRoute = function (index) {
         return $scope.active === $scope.routeInfo.routes[index];
     };
-
-    $scope.isPositivePct = function (pctDifference) {
-        return pctDifference >= 0;
-    }
-    
 });

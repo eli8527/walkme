@@ -1,14 +1,14 @@
 <ul class="list">
     <li class="item">
         No. of Crimes
-        <span class="badge" ng-class="isPositivePct(active.numCrimes) ? 'badge-assertive' : 'badge-balanced'">
-            {{active.numCrimes}}%
+        <span class="badge" style="background-color: {{pctToColor(active.numCrimes)}}">
+            {{pctToText(active.numCrimes)}}
         </span>
     </li>
     <li class="item item-icon-right">
         Crime Severity
-        <span class="badge" ng-class="isPositivePct(active.severity) ? 'badge-assertive' : 'badge-balanced'">
-            {{active.severity}}%
+        <span class="badge" style="background-color: {{pctToColor(active.severity)}}">
+            {{pctToText(active.severity)}}
         </span>
     </li>
 </ul>

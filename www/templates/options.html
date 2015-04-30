@@ -19,7 +19,7 @@
                     <div>
                         <a class="safety-index-link" ng-click="showSafetyInfo()">
                             <h1 class="safety-index" style="color:{{indexToColor(route.safetyIndex)}}">
-                                {{route.safetyIndex}}
+                                {{indexToText(route.safetyIndex)}}
                                 <i class="icon ion-ios-help-outline"></i>
                             </h1>
                         </a>
@@ -28,7 +28,7 @@
                     <span>({{route.legs[0].distance.text}})</span>
                     <p>via {{route.summary}}</p>
                 </a>
-                <button class="go-btn button button-clear" ui-sref="route">
+                <button class="go-btn button button-clear" ui-sref="directions">
                     <span><i class="icon ion-forward"> </i></span>
                 </button>
             </div>

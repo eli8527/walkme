@@ -79,7 +79,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         $scope.directionsService = new maps.DirectionsService();
         $scope.setUpAutocomplete($scope.startInput);
         $scope.setUpAutocomplete($scope.endInput);
-        
+
         // prevent map rendering bug on reentering the view
         $scope.$on('$ionicView.enter', function () {
             maps.event.trigger($scope.map, 'resize');
@@ -149,10 +149,6 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         return $scope.endInput.value !== '';
     }
 
-    $scope.roundToNearestTenth = function (number) {
-        return (Math.round(number * 10) / 10).toFixed(1);
-    }
-
     // Send a JSON request to the server for safety indices of paths
     $scope.requestSafetyIndices = function (addresses) {
         // make sure both addresses have been geocoded
@@ -182,23 +178,11 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
                         // we need to save the response object to render directions later
                         $scope.$parent.routeInfo = response;
-
                         for (var i = 0; i < response.routes.length; i++) {
                             var route = $scope.$parent.routeInfo.routes[i];
-
-                            var safetyIndex = res.indices[i];
-                            route.safetyIndex = $scope.roundToNearestTenth(safetyIndex);
-                            if (safetyIndex < 0) {
-                                route.safetyIndex = '-';
-                            }
-
-                            // assign safety details
-                            route.numCrimes = Math.round(res.numCrimes[i]);
-                            if (route.numCrimes > 0)
-                                route.numCrimes = '+' + route.numCrimes;
-                            route.severity = Math.round(res.severity[i]);
-                            if (route.severity > 0)
-                                route.severity = '+' + route.severity;
+                            route.safetyIndex = res.indices[i];
+                            route.numCrimes = res.numCrimes[i];
+                            route.severity = res.severity[i];
                         }
 
                         $scope.startInput.blur();

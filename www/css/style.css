@@ -1,25 +1,13 @@
-.uber {
-    text-align: center;
-}
+/* -----------------------------------*/
+/*               Global               */
+/* -----------------------------------*/
 
 .popup-body {
     overflow: auto;
 }
 
-input {
-    width: 100%;
-}
-
 .hidden {
     display: none;
-}
-
-.item-input-wrapper {
-    background-color: white;
-}
-
-#map-form button {
-    z-index: 999;
 }
 
 .float-button {
@@ -45,36 +33,46 @@ input {
     margin-top: -12px;
 }
 
+/* -----------------------------------*/
+/*             Home Page              */
+/* -----------------------------------*/
+
+input {
+    width: 100%;
+}
+
+.item-input-wrapper {
+    background-color: #fff;
+}
+
+#map-form button {
+    z-index: 999;
+}
+
 .float-button#submit-btn {
     background-color: #444;
-    color: white;
+    color: #fff;
     bottom: 40px;
 }
 
-.float-button#submit-btn:hover {
+.float-button#submit-btn:active {
     background-color: #bbb;
-}
-
-.float-button#geolocate-btn:hover,
-.float-button#geolocate-directions-btn:hover {
-    background-color: #bbb;
-    color: white;
 }
 
 .float-button#geolocate-btn {
-    background-color: white;
+    background-color: #fff;
     color: #444;
-    font-size: 24px;
     bottom: 110px;
 }
 
-.float-button#geolocate-directions-btn {
-    position: absolute;
-    background-color: white;
-    color: #444;
-    font-size: 24px;
-    top: 300px;
+.float-button#geolocate-btn:active {
+    background-color: #bbb;
+    color: #fff;
 }
+
+/* -----------------------------------*/
+/*            Options Page            */
+/* -----------------------------------*/
 
 .safety-index {
     font-size: 19pt;
@@ -89,14 +87,6 @@ input {
 .safety-index-link {
     display: inline-block;
     text-decoration: none;
-}
-
-.ion-thumbsup {
-    color: #00d200;
-}
-
-.ion-thumbsdown {
-    color: #f20000;
 }
 
 .active-route {
@@ -123,6 +113,80 @@ input {
     border-radius: 5px;
 }
 
+.uber {
+    text-align: center;
+}
+
+.badge {
+    color: #fff;
+}
+
+/* -----------------------------------*/
+/*          Directions Page           */
+/* -----------------------------------*/
+
+.float-button#geolocate-directions-btn {
+    background-color: #fff;
+    color: #444;
+    font-size: 24px;
+    right: 50px;
+    bottom: 50px;
+}
+
+.float-button#geolocate-directions-btn:active {
+    background-color: #bbb;
+    color: #fff;
+}
+
+.warnbox-content,
+.warnbox-c1,
+.warnbox-c2,
+.adp {
+    background-color: #fff;
+    padding: 10px 20px;
+}
+
+.warnbox-content {
+    font-style: italic;
+}
+
+.warnbox-c1,
+.warnbox-c2 {
+    display: none;
+}
+
+.adp-directions {
+    margin: 0 20px;
+}
+
+.adp-summary {
+    display: none;
+}
+
+.adp-placemark {
+    background: none;
+    border: none;
+}
+
+.adp-legal {
+    display: none;
+}
+
+.adp-placemark .adp-text {
+    font-weight: bold;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.adp-step, .adp-substep {
+    border: none;
+}
+
+/* -----------------------------------*/
+/*             About Page             */
+/* -----------------------------------*/
+
 .disclaimer-btn {
     position: absolute;
     width: 100px;
@@ -134,8 +198,4 @@ input {
 #index-graphic {
     max-width: 80%;
     margin: auto;
-}
-
-#directions-map-canvas {
-    min-height: 350px;
 }

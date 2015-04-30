@@ -16,11 +16,11 @@ app.config(function (uiGmapGoogleMapApiProvider, $stateProvider, $urlRouterProvi
             templateUrl: 'templates/options.html',
             controller: 'optionsController'
         })
-        .state('route', {
-            name: 'route',
-            url: '/route',
-            templateUrl: 'templates/route.html',
-            controller: 'routeController'
+        .state('directions', {
+            name: 'directions',
+            url: '/directions',
+            templateUrl: 'templates/directions.html',
+            controller: 'directionsController'
         })
         .state('about', {
             name: 'about',
