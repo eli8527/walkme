@@ -92,4 +92,19 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
     $scope.isPositivePct = function (pctDifference) {
         return pctDifference >= 0;
     }
+    
+    $scope.getUber = function () {
+        console.log("uber");
+        window.open('uber://?action=setPickup&pickup=my_location', 'system');
+    };
+
+    $scope.shouldShow = function () {
+        
+        // is it ios?
+        var ios = navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false;
+        if (!ios) { return false; }
+        
+        // get lowest safety index
+        return true;
+    };
 });

@@ -117,13 +117,19 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         };
     };
 
-    // Clear the start input field
+    // Clear the start input field and associated marker
     $scope.clearStart = function () {
+        if ($scope.startMarker) {
+            $scope.startMarker.setMap(null);
+        }
         $scope.startInput.value = '';
     }
 
-    // Clear the end input field
+    // Clear the end input field and associated marker
     $scope.clearEnd = function () {
+        if ($scope.endMarker) {
+            $scope.endMarker.setMap(null);
+        }
         $scope.endInput.value = '';
     }
 
@@ -294,6 +300,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         });
     };
 
+    // google maps click on source
     $scope.disableTapStart = function () {
         container = document.getElementsByClassName('pac-container');
         // disable ionic data tab
@@ -304,6 +311,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         });
     };
 
+    // google maps click on destination and submit to process
     $scope.disableTapEnd = function () {
         container = document.getElementsByClassName('pac-container');
         // disable ionic data tab
@@ -311,6 +319,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         // leave input field if google-address-entry is selected
         angular.element(container).on("click", function () {
             $scope.endInput.blur();
+            $scope.submit();
         });
     };
 });
