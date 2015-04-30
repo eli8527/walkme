@@ -1,4 +1,4 @@
-app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
+app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionicPopup) {
 
     uiGmapGoogleMapApi.then(function (maps) {
         $scope.mapOptions = {
@@ -21,7 +21,6 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
             var mapHeight = document.getElementById('view-container').clientHeight - document.getElementById('routes-container').clientHeight;
             if (mapHeight < 200) mapHeight = 200;
             document.getElementById('minimap-canvas').style.height = mapHeight + 'px';
-                
 
             $scope.map = new maps.Map(document.getElementById('minimap-canvas'), $scope.mapOptions);
             app.directionsDisplay = new maps.DirectionsRenderer();
@@ -31,11 +30,32 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
 
     });
 
+    $scope.showSafetyInfo = function () {
+        var popup = $ionicPopup.show({
+            title: 'Route Details',
+            subTitle: '% difference from NYC average',
+            templateUrl: 'templates/safety-info.html',
+            scope: $scope,
+            buttons: [{
+                text: 'OK',
+                type: 'button-dark',
+            }]
+        });
+        document.onkeypress = function (e) {
+            e = e || window.event;
+            if (e.keyCode === 13) {
+                if (popup) {
+                    popup.close();
+                }
+            }
+        };
+    };
+
     $scope.indexToColor = function (index) {
         if (index < 0) {
             console.log("Invalid safety index");
             return undefined;
-        } else if (index === 'N/A') return "#888888";
+        } else if (index === '-') return "#888888";
         else if (index <= 3) return "#f20000";
         else if (index <= 4) return "#ea3d00";
         else if (index <= 5) return "#ea5f00";
@@ -54,7 +74,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
     };
 
     $scope.setAppRoute = function (index) {
-        $scope.active = index;
+        $scope.active = $scope.routeInfo.routes[index];
 
         app.directionsDisplay.setMap(null);
         app.directionsDisplay = new google.maps.DirectionsRenderer({
@@ -66,6 +86,10 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi) {
     };
 
     $scope.isActiveRoute = function (index) {
-        return $scope.active === index;
+        return $scope.active === $scope.routeInfo.routes[index];
     };
+
+    $scope.isPositivePct = function (pctDifference) {
+        return pctDifference >= 0;
+    }
 });

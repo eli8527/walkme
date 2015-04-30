@@ -5,7 +5,7 @@
             <div class="item item-divider">
                 Preview
             </div>
-
+            
             <div id="minimap-canvas">
                 <ui-gmap-google-map center="mapOptions.center" zoom="mapOptions.zoom"></ui-gmap-google-map>
             </div>
@@ -13,13 +13,15 @@
             <div class="item item-divider">
                 Options
             </div>
-            <div ng-repeat="route in routeInfo.routes | orderBy:'-index'" ng-click="setAppRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
+            
+            <div ng-repeat="route in routeInfo.routes | orderBy:'-safetyIndex'" ng-click="setAppRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
                 <a ng-model="route">
                     <div>
-                        <a class="safety-index-link" ui-sref="about">
-                            <h1 class="safety-index" style="color:{{indexToColor(route.index)}}">
-                            {{route.index}}
-                        </h1>
+                        <a class="safety-index-link" ng-click="showSafetyInfo()">
+                            <h1 class="safety-index" style="color:{{indexToColor(route.safetyIndex)}}">
+                                {{route.safetyIndex}}
+                                <i class="icon ion-ios-help-outline"></i>
+                            </h1>
                         </a>
                     </div>
                     <span>{{route.legs[0].duration.text}}</span>

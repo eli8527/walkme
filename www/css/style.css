@@ -15,7 +15,7 @@ input {
 }
 
 #map-form button {
-    z-index: 999;   
+    z-index: 999;
 }
 
 .float-button {
@@ -69,9 +69,21 @@ input {
     padding: 0;
 }
 
+.safety-index>i {
+    color: #444;
+}
+
 .safety-index-link {
     display: inline-block;
     text-decoration: none;
+}
+
+.ion-thumbsup {
+    color: #00d200;   
+}
+
+.ion-thumbsdown {
+    color: #f20000;   
 }
 
 .active-route {

@@ -137,6 +137,10 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         return $scope.endInput.value !== '';
     }
 
+    $scope.roundToNearestTenth = function (number) {
+        return (Math.round(number * 10) / 10).toFixed(1);
+    }
+
     // Send a JSON request to the server for safety indices of paths
     $scope.requestSafetyIndices = function (addresses) {
         // make sure both addresses have been geocoded
@@ -164,15 +168,27 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                         $ionicLoading.hide();
                         var res = JSON.parse(req.responseText);
 
-                        // make info available to view
+                        // we need to save the response object to render directions later
                         $scope.$parent.routeInfo = response;
 
-                        _.forEach(res.indices, function (index, i) {
-                            $scope.$parent.routeInfo.routes[i].index = (Math.round(index * 10) / 10).toFixed(1);
-                            if (index < 0) {
-                                $scope.$parent.routeInfo.routes[i].index = '-';
+                        for (var i = 0; i < response.routes.length; i++) {
+                            var route = $scope.$parent.routeInfo.routes[i];
+
+                            var safetyIndex = res.indices[i];
+                            route.safetyIndex = $scope.roundToNearestTenth(safetyIndex);
+                            if (safetyIndex < 0) {
+                                route.safetyIndex = '-';
                             }
-                        });
+
+                            // assign safety details
+                            route.numCrimes = $scope.roundToNearestTenth(res.numCrimes[i]);
+//                            if (route.numCrimes > 0)
+//                                route.numCrimes = '+' + route.numCrimes;
+                            route.severity = $scope.roundToNearestTenth(res.severity[i]);
+//                            if (route.severity > 0)
+//                                route.severity = '+' + route.severity;
+                        }
+
                         $scope.startInput.blur();
                         $scope.endInput.blur();
                         $state.go('options');
@@ -193,7 +209,6 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Geocode the start and end address and submit request
     $scope.submit = function () {
-        console.log('submitting');
         // make sure both input fields are populated
         if ($scope.startInput.value == '' || $scope.endInput.value == '')
             return;
