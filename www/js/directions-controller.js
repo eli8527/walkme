@@ -33,8 +33,6 @@ app.controller("directionsController", function ($scope, uiGmapGoogleMapApi, $io
             $scope.map = new maps.Map(document.getElementById('directions-map-canvas'), $scope.mapOptions);
             app.directionsDisplay.setMap($scope.map);
             $scope.loaded = true;
-
-
         });
     });
 

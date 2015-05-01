@@ -125,6 +125,10 @@ input {
 /*          Directions Page           */
 /* -----------------------------------*/
 
+#directions-view-container {
+    padding: 0;
+}
+
 .float-button#geolocate-directions-btn {
     position: absolute;
     background-color: #fff;
