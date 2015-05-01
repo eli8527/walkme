@@ -126,11 +126,11 @@ input {
 /* -----------------------------------*/
 
 .float-button#geolocate-directions-btn {
+    position: absolute;
     background-color: #fff;
     color: #444;
-    font-size: 24px;
-    right: 50px;
     bottom: 50px;
+    right: 50px;
 }
 
 .float-button#geolocate-directions-btn:active {

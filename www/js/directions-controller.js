@@ -33,6 +33,8 @@ app.controller("directionsController", function ($scope, uiGmapGoogleMapApi, $io
             $scope.map = new maps.Map(document.getElementById('directions-map-canvas'), $scope.mapOptions);
             app.directionsDisplay.setMap($scope.map);
             $scope.loaded = true;
+
+
         });
     });
 
@@ -51,7 +53,7 @@ app.controller("directionsController", function ($scope, uiGmapGoogleMapApi, $io
         }, function (error) {
             var popup = $ionicPopup.alert({
                 title: ':(',
-                template: error
+                template: 'Geolocation not supported!'
             });
             document.onkeypress = function (e) {
                 e = e || window.event;
