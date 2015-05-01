@@ -125,6 +125,8 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Clear the start input field and associated marker
     $scope.clearStart = function () {
+       // cordova.plugins.Keyboard.close();
+        $scope.startInput.blur();
         if ($scope.startMarker) {
             $scope.startMarker.setMap(null);
         }
@@ -133,6 +135,9 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Clear the end input field and associated marker
     $scope.clearEnd = function () {
+        //cordova.plugins.Keyboard.close();
+        $scope.endInput.blur();
+        
         if ($scope.endMarker) {
             $scope.endMarker.setMap(null);
         }
