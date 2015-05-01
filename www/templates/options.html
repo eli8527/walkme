@@ -14,7 +14,7 @@
                 Options
             </div>
             
-            <div ng-repeat="route in routeInfo.routes" ng-click="setAppRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
+            <div ng-repeat="route in routeInfo.routes" ng-click="setActiveRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
                 <a ng-model="route">
                     <div>
                         <a class="safety-index-link" ng-click="showSafetyInfo($index)">
