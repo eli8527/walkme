@@ -86,7 +86,6 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         });
     });
 
-
     // Make a popup with given error message
     $scope.showAlert = function (error) {
         $scope.startInput.blur();
@@ -125,7 +124,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Clear the start input field and associated marker
     $scope.clearStart = function () {
-       // cordova.plugins.Keyboard.close();
+        // cordova.plugins.Keyboard.close();
         $scope.startInput.blur();
         if ($scope.startMarker) {
             $scope.startMarker.setMap(null);
@@ -137,18 +136,20 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
     $scope.clearEnd = function () {
         //cordova.plugins.Keyboard.close();
         $scope.endInput.blur();
-        
+
         if ($scope.endMarker) {
             $scope.endMarker.setMap(null);
         }
         $scope.endInput.value = '';
     }
 
+    // Is the start input field populated?
     $scope.hasStartInput = function () {
         if (!$scope.startInput) return false;
         return $scope.startInput.value !== '';
     }
 
+    // Is the destination input field populated?
     $scope.hasEndInput = function () {
         if (!$scope.endInput) return false;
         return $scope.endInput.value !== '';
@@ -188,7 +189,15 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                             route.safetyIndex = res.indices[i];
                             route.numCrimes = res.numCrimes[i];
                             route.severity = res.severity[i];
+                            console.log([route.safetyIndex, route.numCrimes, route.severity]);
                         }
+                        
+                        // sort the routes according to decreasing safety index
+                        $scope.$parent.routeInfo.routes.sort(function (route1, route2) {
+                            if (route1.safetyIndex < route2.safetyIndex) return 1;
+                            else if (route1.safetyIndex > route2.safetyIndex) return -1;
+                            return 0;
+                        });
 
                         $scope.startInput.blur();
                         $scope.endInput.blur();

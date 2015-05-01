@@ -11,7 +11,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
             zoom: 12,
             disableDefaultUI: true
         };
-        
+
         $scope.loaded = false;
         $scope.$on("$ionicView.enter", function () {
             if ($scope.map) {
@@ -32,7 +32,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
 
             $scope.map = new maps.Map(document.getElementById('minimap-canvas'), $scope.mapOptions);
             app.directionsDisplay = new maps.DirectionsRenderer();
-            $scope.setAppRoute(0);
+            $scope.setActiveRoute(0);
             $scope.loaded = true;
         });
 
@@ -67,7 +67,8 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
     };
 
     // Make a popup that shows additional safety details
-    $scope.showSafetyInfo = function () {
+    $scope.showSafetyInfo = function (index) {
+        $scope.setActiveRoute(index);
         var popup = $ionicPopup.show({
             title: 'Route Details',
             subTitle: '% difference from NYC average',
@@ -102,7 +103,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
         if (index <= 8.5) return "#58da00";
         if (index <= 9) return "#38d600";
         if (index <= 10) return "#00d200";
-        
+
         console.log("Invalid safety index");
         return undefined;
     };
@@ -128,7 +129,7 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
     }
 
     // Set the highlighted route to the route at index
-    $scope.setAppRoute = function (index) {
+    $scope.setActiveRoute = function (index) {
         $scope.active = $scope.routeInfo.routes[index];
 
         app.directionsDisplay.setMap(null);
