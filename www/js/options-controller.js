@@ -91,18 +91,16 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
 
     // Get color to render for safety index
     $scope.indexToColor = function (index) {
-        if (index < 0) return "#888888";
-        if (index <= 3) return "#f20000";
-        if (index <= 4) return "#ea3d00";
-        if (index <= 5) return "#ea5f00";
-        if (index <= 6) return "#ee8e00";
-        if (index <= 6.5) return "#deb400";
-        if (index <= 7) return "#e2dd00";
-        if (index <= 7.5) return "#b7e200";
-        if (index <= 8) return "#8bea00";
-        if (index <= 8.5) return "#58da00";
-        if (index <= 9) return "#38d600";
-        if (index <= 10) return "#00d200";
+        if (index < 0) return colors[0];
+        if (index <= 3) return colors[1];
+        if (index <= 3.5) return colors[2];
+        if (index <= 4) return colors[3];
+        if (index <= 4.5) return colors[4];
+        if (index <= 5) return colors[5];
+        if (index <= 7) return colors[6];
+        if (index <= 8) return colors[7];
+        if (index <= 9) return colors[8];
+        if (index <= 10) return colors[9];
 
         console.log("Invalid safety index");
         return undefined;
@@ -116,9 +114,16 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
 
     // Get color to render for percentage
     $scope.pctToColor = function (pct) {
-        if (pct === -999 || pct == 0) return "#888888";
-        if (pct > 0) return "#f20000";
-        return "#00d200";
+        if (pct === -999 || pct == 0) return colors[0];
+        if (pct < -30) return colors[9];
+        if (pct < -20) return colors[8];
+        if (pct < -10) return colors[7];
+        if (pct < 0) return colors[6];
+        if (pct < 10) return colors[5];
+        if (pct < 20) return colors[4];
+        if (pct < 30) return colors[3];
+        if (pct < 40) return colors[2];
+        return colors[1];
     }
 
     // Convert percentage to display text
