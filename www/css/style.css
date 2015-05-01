@@ -125,10 +125,6 @@ input {
 /*          Directions Page           */
 /* -----------------------------------*/
 
-#directions-view-container {
-    padding: 0;
-}
-
 .float-button#geolocate-directions-btn {
     position: absolute;
     background-color: #fff;
@@ -173,7 +169,7 @@ input {
 }
 
 .adp-legal {
-    display: none;
+/*    display: none;*/
 }
 
 .adp-placemark .adp-text {
