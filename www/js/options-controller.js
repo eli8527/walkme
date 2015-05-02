@@ -95,8 +95,8 @@ app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionic
         if (index <= 3) return colors[1];
         if (index <= 3.5) return colors[2];
         if (index <= 4) return colors[3];
-        if (index <= 4.5) return colors[4];
-        if (index <= 5) return colors[5];
+        if (index <= 5) return colors[4];
+        if (index <= 6) return colors[5];
         if (index <= 7) return colors[6];
         if (index <= 8) return colors[7];
         if (index <= 9) return colors[8];
