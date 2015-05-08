@@ -23,6 +23,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
             document.getElementById('map-container').clientHeight -
             document.getElementById('map-form').clientHeight + 'px';
 
+        // shows welcome only on first launch
         if (!localStorage.getItem("hasViewedIntro")) {
             $scope.showWelcome();
             localStorage.setItem("hasViewedIntro", "true");
@@ -124,7 +125,6 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Clear the start input field and associated marker
     $scope.clearStart = function () {
-        // cordova.plugins.Keyboard.close();
         $scope.startInput.blur();
         if ($scope.startMarker) {
             $scope.startMarker.setMap(null);
@@ -134,7 +134,6 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
 
     // Clear the end input field and associated marker
     $scope.clearEnd = function () {
-        //cordova.plugins.Keyboard.close();
         $scope.endInput.blur();
 
         if ($scope.endMarker) {
@@ -191,7 +190,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
                             route.severity = res.severity[i];
                             console.log([route.safetyIndex, route.numCrimes, route.severity]);
                         }
-                        
+
                         // sort the routes according to decreasing safety index
                         $scope.$parent.routeInfo.routes.sort(function (route1, route2) {
                             if (route1.safetyIndex < route2.safetyIndex) return 1;
@@ -320,7 +319,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         container = document.getElementsByClassName('pac-container');
         // disable ionic data tab
         angular.element(container).attr('data-tap-disabled', 'true');
-        // leave input field if google-address-entry is selected
+        // leave input field if google-address-entry is selected - auto go to get directions
         angular.element(container).on("click", function () {
             $scope.endInput.blur();
             $scope.submit();

@@ -5,7 +5,7 @@
             <div class="item item-divider">
                 Preview
             </div>
-            
+
             <div id="minimap-canvas">
                 <ui-gmap-google-map center="mapOptions.center" zoom="mapOptions.zoom"></ui-gmap-google-map>
             </div>
@@ -13,7 +13,7 @@
             <div class="item item-divider">
                 Options
             </div>
-            
+
             <div ng-repeat="route in routeInfo.routes" ng-click="setActiveRoute($index)" class="item item-button-right" ng-class="{'active-route' : isActiveRoute($index)}">
                 <a ng-model="route">
                     <div>
@@ -33,7 +33,7 @@
                 </button>
             </div>
             <div class="uber">
-                <button ng-class="{'hidden':!shouldShow()}" class="button button-clear" ng-click="getUber()" >Request an Uber</button>
+                <button ng-class="{'hidden':!shouldShow()}" class="button button-clear" ng-click="getUber()">Request an Uber</button>
             </div>
         </ul>
     </ion-content>

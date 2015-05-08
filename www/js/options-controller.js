@@ -1,5 +1,6 @@
 app.controller('optionsController', function ($scope, uiGmapGoogleMapApi, $ionicPopup) {
 
+    // maps handling
     uiGmapGoogleMapApi.then(function (maps) {
         $scope.mapOptions = {
             center: {
