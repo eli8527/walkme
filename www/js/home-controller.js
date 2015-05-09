@@ -111,7 +111,7 @@ app.controller("homeController", function ($scope, $state, $ionicLoading, $ionic
         $scope.endInput.blur();
         var popup = $ionicPopup.alert({
             title: 'Welcome',
-            template: 'Welcome to WalkMe NYC!. To learn more, click the info button in the upper right corner.'
+            template: 'Welcome to WalkMe NYC! To learn more, click the info button in the upper right corner.'
         });
         document.onkeypress = function (e) {
             e = e || window.event;
